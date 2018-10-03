@@ -1,0 +1,10 @@
+.DS_Store
+.env
+.npm
+coverage
+dist
+logs
+node_modules
+npm-debug.*
+package-lock.json
+reports

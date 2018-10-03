@@ -1,0 +1,23 @@
+{
+  "presets": [
+    "react",
+    "stage-2",
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "transform-function-bind"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "jest",
+        "stage-0"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "transform-function-bind",
+        "transform-es2015-modules-commonjs"
+      ]
+    }
+  }
+}

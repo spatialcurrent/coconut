@@ -1,0 +1,18 @@
+{
+  "parser": "babel-eslint",
+  "extends": "eslint-config-airbnb",
+  "rules": {
+    "class-methods-use-this": "off",
+    "comma-dangle": ["error", { "objects": "always-multiline" }],
+    "import/no-unresolved": "off",
+    "no-use-before-define": "off",
+    "object-curly-newline": "off",
+    "prefer-destructuring": "off",
+    "react/forbid-prop-types": "off",
+    "react/destructuring-assignment": "off",
+    "react/jsx-filename-extension": "off",
+    "react/prefer-stateless-function": "off",
+    "sort-keys": "error",
+    "space-before-function-paren": ["error", "always"]
+  }
+}
