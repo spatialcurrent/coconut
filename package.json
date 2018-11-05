@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node ./node_modules/webpack/bin/webpack.js --config ./webpack/webpack.prod.js",
     "lint": "eslint src",
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack/webpack.dev.js",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack/webpack.dev.js --port 8081",
     "test": ""
   },
   "repository": {

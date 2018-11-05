@@ -11,36 +11,44 @@ module.exports = {
   ],
   resolve: {
     modules: ['node_modules', 'src'],
-    extensions: ['.js', '.json']
+    extensions: ['.js', '.json'],
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.scss$/,
         use: [
-          "style-loader",
+          'style-loader',
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
+              localIdentName: '[local]___[hash:base64:5]',
               modules: true,
-              localIdentName: '[local]___[hash:base64:5]'
-            }
+            },
           },
-          "sass-loader"
-        ]
+          'sass-loader'
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ],
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: "babel-loader",
+        use: 'babel-loader',
       }
-    ]
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(['docs']),
     new CopyWebpackPlugin([{
-        from: 'images',
-        to: 'images'
-      },
+      from: 'images',
+      to: 'images',
+    },
       // {
       //   from: './assets/favicon.png',
       //   to: 'favicon.png'
@@ -52,4 +60,4 @@ module.exports = {
       title: 'Coconut',
     })
   ],
-}
+};

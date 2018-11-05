@@ -1,4 +1,6 @@
+$navbar-height: 64px;
+
 .map {
-  width: 500px;
-  height: 500px;
+  height: calc(100% - #{navbar-height});
+  width: 100%;
 }
