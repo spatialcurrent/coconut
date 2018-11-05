@@ -1,0 +1,7 @@
+$dialog-width: 400px;
+
+.content {
+  display: flex;
+  justify-content: center;
+  min-width: $dialog-width;
+}
