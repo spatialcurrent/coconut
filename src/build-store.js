@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducer from './reducers/root';
+import reducer from './reducers';
 
 const buildStore = () => {
   const composeTool = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line
-  return createStore(rootReducer, composeTool(applyMiddleware(thunk)));
+  return createStore(reducer, composeTool(applyMiddleware(thunk)));
 };
 
 export default buildStore;

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from './components/app';
-import buildStore from './build-store';
 import { Provider } from 'react-redux';
+import App from 'components/app';
+import buildStore from 'build-store';
 
 const store = buildStore();
 
@@ -13,5 +13,5 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-  document.getElementById('app')
+  document.getElementById('app') // eslint-disable-line
 );
