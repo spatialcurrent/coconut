@@ -1,0 +1,19 @@
+$panel-width: 40%;
+$navbar-height: 64px;
+
+.panel {
+  width: $panel-width;
+}
+
+.content {
+  padding: 16px;
+}
+
+.top {
+  height: $navbar-height;
+
+  button {
+    float: right;
+    margin: 8px;
+  }
+}

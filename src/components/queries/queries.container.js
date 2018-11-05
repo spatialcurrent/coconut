@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
 import Queries from './queries.component';
 
-const mapStateToProps = ({ queries }) => ({
-  queries: [{ name: 'hello' }, { name: 'world' }],
-});
+function mapState ({ queries }) {
+  return {
+    queries,
+  };
+}
 
-export default connect(mapStateToProps)(Queries);
+export default connect(mapState)(Queries);

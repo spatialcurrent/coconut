@@ -1,10 +1,10 @@
-import { CLOSE_LOADER, OPEN_LOADER } from 'action-types';
+import { CLOSE_PANEL, OPEN_PANEL } from 'action-types';
 
 export default function (state = false, { type }) {
   switch (type) {
-    case OPEN_LOADER:
+    case OPEN_PANEL:
       return true;
-    case CLOSE_LOADER:
+    case CLOSE_PANEL:
       return false;
     default:
       return state;
