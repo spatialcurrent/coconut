@@ -13,6 +13,7 @@
     "react/jsx-filename-extension": "off",
     "react/jsx-no-bind": "off",
     "react/prefer-stateless-function": "off",
+    "react/require-default-props": "off",
     "sort-keys": "error",
     "space-before-function-paren": ["error", "always"]
   }

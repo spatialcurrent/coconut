@@ -1,3 +1,3 @@
-import Map from './map.component';
+import Map from './map.container';
 
 export default Map;

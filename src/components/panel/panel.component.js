@@ -9,8 +9,8 @@ import styles from './panel.styles.scss';
 
 export default class Panel extends Component {
   static propTypes = {
-    closePanel: PropTypes.func.isRequired,
-    showPanel: PropTypes.bool.isRequired,
+    clearFeature: PropTypes.func.isRequired,
+    feature: PropTypes.object,
   }
 
   get panel () {
@@ -21,7 +21,7 @@ export default class Panel extends Component {
         variant="permanent"
       >
         <div className={styles.top}>
-          <IconButton onClick={this.props.closePanel}>
+          <IconButton onClick={this.props.clearFeature}>
             <CloseIcon />
           </IconButton>
         </div>
@@ -34,7 +34,7 @@ export default class Panel extends Component {
   }
 
   render () {
-    if (this.props.showPanel) {
+    if (this.props.feature) {
       return this.panel;
     }
 

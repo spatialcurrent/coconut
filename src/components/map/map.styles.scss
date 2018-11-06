@@ -4,3 +4,8 @@ $navbar-height: 64px;
   height: calc(100% - #{navbar-height});
   width: 100%;
 }
+
+:export {
+  featureFill: #f73378;
+  featureStroke: #ab003c;
+}

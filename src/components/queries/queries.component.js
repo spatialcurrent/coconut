@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,15 +16,43 @@ import styles from './queries.styles.scss';
 
 export default class Queries extends Component {
   static propTypes = {
+    getFeatures: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
+    loadQueries: PropTypes.func.isRequired,
     queries: PropTypes.array.isRequired,
   }
 
+  componentDidMount () {
+    const { loadQueries, queries } = this.props;
+    if (!queries.length) {
+      loadQueries();
+    }
+  }
+
   get queries () {
-    return this.props.queries.map(({ id, name }) => (
-      <div key={id} className={styles.query}>
-        <h3>{ name }</h3>
-      </div>
+    const { getFeatures } = this.props;
+    return this.props.queries.map(({ description, service, title }) => (
+      <Card key={service} className={styles.query}>
+        <CardContent className={styles.queryContent}>
+          <Typography variant="title" component="h2">
+            { title }
+          </Typography>
+          <Typography component="p">
+            { description }
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Link className={styles.link} to="/">
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => getFeatures({ service })}
+            >
+              Use query
+            </Button>
+          </Link>
+        </CardActions>
+      </Card>
     ));
   }
 
@@ -39,7 +72,7 @@ export default class Queries extends Component {
         open
         TransitionComponent={::this.transition}
       >
-        <AppBar>
+        <AppBar position="static">
           <Toolbar>
             <IconButton color="inherit" onClick={::this.handleClose} aria-label="Close">
               <CloseIcon />
@@ -49,7 +82,9 @@ export default class Queries extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        { this.queries }
+        <div className={styles.queries}>
+          { this.queries }
+        </div>
       </Dialog>
     );
   }

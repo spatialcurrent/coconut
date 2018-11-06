@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
-import closePanel from 'actions/close-panel';
+import clearFeature from 'actions/clear-feature';
 import Panel from './panel.component';
 
-function mapState({ showPanel }) {
+function mapState ({ feature }) {
   return {
-    showPanel,
+    feature,
   };
 }
 
 function mapDispatch (dispatch) {
   return {
-    closePanel: () => dispatch(closePanel()),
+    clearFeature: () => dispatch(clearFeature()),
   };
 }
 
