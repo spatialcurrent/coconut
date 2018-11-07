@@ -1,9 +1,9 @@
 import { CLEAR_FEATURE, SET_FEATURE } from 'action-types';
 
-export default function (state = null, action) {
-  switch (action.type) {
+export default function (state = null, { feature, type }) {
+  switch (type) {
     case SET_FEATURE:
-      return action.data;
+      return feature;
     case CLEAR_FEATURE:
       return null;
     default:

@@ -1,8 +1,8 @@
-$panel-width: 40%;
+$panel-width: 400px;
 $navbar-height: 64px;
 
 .panel {
-  width: $panel-width;
+  max-width: $panel-width;
 }
 
 .content {

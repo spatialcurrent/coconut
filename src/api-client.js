@@ -17,6 +17,5 @@ export async function getProcesses () {
 
 export async function executeService ({ service }) {
   const { data } = await client.post('/services/exec.json', { service });
-  console.error('data: ', data);
   return data;
 }

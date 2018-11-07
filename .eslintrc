@@ -2,6 +2,7 @@
   "parser": "babel-eslint",
   "extends": "eslint-config-airbnb",
   "rules": {
+    "arrow-parens": ["error", "as-needed"],
     "class-methods-use-this": "off",
     "comma-dangle": ["error", { "objects": "always-multiline" }],
     "import/no-unresolved": "off",
