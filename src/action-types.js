@@ -7,3 +7,4 @@ export const LOAD_QUERIES = 'LOAD_QUERIES';
 export const OPEN_LOADER = 'OPEN_LOADER';
 export const OPEN_MENU = 'OPEN_MENU';
 export const SET_FEATURE = 'SET_FEATURE';
+export const GET_QUERY = 'GET_QUERY';

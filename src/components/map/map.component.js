@@ -116,7 +116,7 @@ export default class extends Component {
         radius: SELECTED_FEATURE_RADIUS,
         stroke: new Stroke({
           color: styles.selectedFeatureStroke,
-          width: SELECTED_FEATURE_STROKE_WIDTH
+          width: SELECTED_FEATURE_STROKE_WIDTH,
         }),
       }),
     });
@@ -140,7 +140,7 @@ export default class extends Component {
         radius: FEATURE_RADIUS,
         stroke: new Stroke({
           color: styles.featureStroke,
-          width: FEATURE_STROKE_WIDTH
+          width: FEATURE_STROKE_WIDTH,
         }),
       }),
     });

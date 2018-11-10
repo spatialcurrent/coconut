@@ -21,15 +21,15 @@ export default class Panel extends Component {
   get properties () {
     const { properties } = this.props.feature;
     return Object.keys(properties).map(key => (
-        <TableRow key={key}>
-          <TableCell component="th" scope="row">
-            { key }
-          </TableCell>
-          <TableCell>
-            { properties[key] }
-          </TableCell>
-        </TableRow>
-      ));
+      <TableRow key={key}>
+        <TableCell component="th" scope="row">
+          { key }
+        </TableCell>
+        <TableCell>
+          { properties[key] }
+        </TableCell>
+      </TableRow>
+    ));
   }
 
   get panel () {

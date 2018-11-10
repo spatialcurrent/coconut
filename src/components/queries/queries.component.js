@@ -31,11 +31,14 @@ export default class Queries extends Component {
 
   get queries () {
     const { getFeatures } = this.props;
-    return this.props.queries.map(({ description, service, title }) => (
+    return this.props.queries.map(({ datastore, description, service, title }) => (
       <Card key={service} className={styles.query}>
         <CardContent className={styles.queryContent}>
           <Typography variant="title" component="h2">
             { title }
+          </Typography>
+          <Typography component="h3">
+            { `Data Store: ${datastore}` }
           </Typography>
           <Typography component="p">
             { description }
