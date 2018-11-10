@@ -16,6 +16,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        use: 'file-loader',
+      },
+      {
         test: /\.scss$/,
         use: [
           'style-loader',

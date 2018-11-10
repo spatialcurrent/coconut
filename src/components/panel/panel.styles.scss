@@ -2,11 +2,17 @@ $panel-width: 400px;
 $navbar-height: 64px;
 
 .panel {
-  max-width: $panel-width;
+  > div {
+    width: $panel-width;
+  }
 }
 
 .content {
   padding: 16px;
+
+  h1 {
+    padding-left: 24px;
+  }
 }
 
 .top {

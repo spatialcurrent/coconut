@@ -6,6 +6,7 @@ import Loader from 'components/loader';
 import Menu from 'components/menu';
 import Queries from 'components/queries';
 import styles from './app.styles.scss';
+import 'typeface-roboto';
 
 class App extends Component {
   static propTypes = {

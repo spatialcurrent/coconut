@@ -18,6 +18,15 @@ export default class Panel extends Component {
     feature: PropTypes.object,
   }
 
+  get title () {
+    const { feature } = this.props;
+    if (feature.properties && feature.properties.name) {
+      return `Name: ${feature.properties.name}`;
+    }
+
+    return `Id: ${feature.id}`;
+  }
+
   get properties () {
     const { properties } = this.props.feature;
     return Object.keys(properties).map(key => (
@@ -46,8 +55,13 @@ export default class Panel extends Component {
         </div>
         <Divider />
         <div className={styles.content}>
-          <Typography variant="title">
-            {`Id: ${this.props.feature.id}`}
+          <Typography
+            color="textPrimary"
+            component="h1"
+            gutterBottom
+            variant="title"
+          >
+            { this.title }
           </Typography>
           { this.table }
         </div>

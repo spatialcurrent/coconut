@@ -8,9 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import styles from './query-info.styles.scss';
 
 export default class QueryInfo extends Component {
@@ -33,6 +31,7 @@ export default class QueryInfo extends Component {
     const {
       datastore,
       description,
+      expression,
       name,
       process,
       title,
@@ -60,6 +59,10 @@ export default class QueryInfo extends Component {
           <TableCell>Service</TableCell>
           <TableCell>{name}</TableCell>
         </TableRow>
+        <TableRow>
+          <TableCell>Expression</TableCell>
+          <TableCell><pre className={styles.pre}>{expression}</pre></TableCell>
+        </TableRow>
       </Fragment>
     );
   }
@@ -82,14 +85,17 @@ export default class QueryInfo extends Component {
           className={styles.button}
           color="secondary"
           disabled={this.disabled}
+          gutterBottom
           onClick={() => this.setState({ open: true })}
           variant="fab"
         >
           <EditIcon />
         </Button>
         <Dialog open={this.state.open} onClose={() => this.setState({ open: false })}>
-          <DialogTitle>Query Information</DialogTitle>
-          <DialogContent className={styles.content}>
+          <DialogTitle>
+            <span className={styles.title}>Query Information</span>
+          </DialogTitle>
+          <DialogContent>
             { this.table }
           </DialogContent>
         </Dialog>
