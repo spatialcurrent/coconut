@@ -1,0 +1,49 @@
+version: 2.1
+executors:
+  base:
+    docker:
+      - image: circleci/circleci/node:4.8.2
+    working_directory: ~/coconut
+jobs:
+  pre_deps_javascript:
+    executor: base
+    steps:
+      - checkout
+      - run: sudo npm install -g npm@5
+      - restore_cache:
+          key: v1-node-modules-{{ .Branch }}-{{ .Revision }}
+      - run: npm install
+      - save_cache:
+          key: v1-node-modules-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ./node_modules
+  test:
+    executor: base
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ .Branch }}-{{ .Revision }}
+      - run: npm run lint
+  build_webpack:
+    executor: base
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ .Branch }}-{{ .Revision }}
+      - run: npm run build
+      - store_artifacts:
+          path: dist
+          destination: /
+workflows:
+  main:
+    jobs:
+      - pre_deps_javascript
+      - test:
+          requires:
+            - pre_deps_javascript
+      - build_webpack:
+          requires:
+            - pre_deps_javascript
+
