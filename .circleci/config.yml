@@ -9,7 +9,7 @@ jobs:
     executor: base
     steps:
       - checkout
-      - run: sudo npm install -g npm@5
+      - run: sudo npm install -g npm@latest
       - restore_cache:
           key: v1-node-modules-{{ .Branch }}-{{ .Revision }}
       - run: npm install
