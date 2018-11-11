@@ -2,7 +2,7 @@ version: 2.1
 executors:
   base:
     docker:
-      - image: circleci/circleci/node:4.8.2
+      - image: circleci/node:11
     working_directory: ~/coconut
 jobs:
   pre_deps_javascript:
