@@ -1,14 +1,30 @@
+$mobile-width: 600px;
+
 .button {
   position: absolute;
-  bottom: 100px;
-  left: 30px;
+  bottom: 75px;
+  left: 20px;
   z-index: 10;
 }
 
 .title {
+  display: block;
   padding: 24px;
 }
 
 .pre {
   white-space: pre-wrap;
 }
+
+@media (max-width: $mobile-width) {
+  .title {
+    padding: 8px;
+  }
+
+  .table tr {
+    td {
+      padding: 0px 16px 0px 8px;
+    }
+  }
+}
+

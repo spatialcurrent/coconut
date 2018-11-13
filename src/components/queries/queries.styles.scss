@@ -1,11 +1,14 @@
+$tablet-width: 900px;
+$mobile-width: 600px;
+
 .queries {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  padding: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 
   .query {
-    width: 300px;
-    margin: 16px;
-
     .queryContent {
       height: 200px;
 
@@ -13,6 +16,18 @@
         margin: 8px 0;
       }
     }
+
+    &:last-child {
+      margin-bottom: 16px;
+    }
+  }
+
+  @media (max-width: $tablet-width) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: $mobile-width) {
+    grid-template-columns: 1fr;
   }
 }
 

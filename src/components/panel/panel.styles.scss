@@ -1,9 +1,22 @@
-$panel-width: 400px;
+$mobile-width: 600px;
 $navbar-height: 64px;
+$panel-height-mobile: 400px;
+$panel-width: 400px;
+$panel-width-tablet: 350px;
+$tablet-width: 900px;
 
 .panel {
   > div {
     width: $panel-width;
+
+    @media (max-width: $tablet-width) {
+      width: $panel-width-tablet;
+    }
+
+    @media (max-width: $mobile-width) {
+      width: 100%;
+      height: $panel-height-mobile;
+    }
   }
 }
 
@@ -23,3 +36,17 @@ $navbar-height: 64px;
     margin: 8px;
   }
 }
+
+@media (max-width: $tablet-width) {
+  .content h1 {
+    padding: 8px;
+  }
+
+  .table tr {
+    th, td {
+      padding: 0px 16px 0px 8px;
+    }
+  }
+}
+
+

@@ -12,10 +12,18 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import styles from './panel.styles.scss';
 
+const MOBILE_WIDTH = 650;
 export default class Panel extends Component {
   static propTypes = {
     clearFeature: PropTypes.func.isRequired,
     feature: PropTypes.object,
+  }
+
+  get anchor () {
+    if (window.outerWidth > MOBILE_WIDTH) { // eslint-disable-line
+      return 'right';
+    }
+    return 'bottom';
   }
 
   get title () {
@@ -44,7 +52,7 @@ export default class Panel extends Component {
   get panel () {
     return (
       <Drawer
-        anchor="right"
+        anchor={this.anchor}
         className={styles.panel}
         variant="permanent"
       >
@@ -71,7 +79,7 @@ export default class Panel extends Component {
 
   get table () {
     return (
-      <Table>
+      <Table className={styles.table}>
         <TableHead>
           <TableRow>
             <TableCell>Property</TableCell>
