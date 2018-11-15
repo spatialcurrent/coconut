@@ -2,7 +2,7 @@ import { LOAD_QUERIES } from 'action-types';
 import { getServices } from 'api-client';
 
 export default function () {
-  return async (dispatch) => {
+  return async dispatch => {
     const services = await getServices();
     const queries = services.map(service => ({
       ...service,

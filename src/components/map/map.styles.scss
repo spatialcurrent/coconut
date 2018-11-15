@@ -1,7 +1,7 @@
-$navbar-height: 64px;
+$navbar-height: 56px;
 
 .map {
-  height: calc(100% - #{navbar-height});
+  height: calc(100% - #{$navbar-height});
   width: 100%;
 }
 

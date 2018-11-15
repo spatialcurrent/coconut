@@ -69,7 +69,7 @@ export default class QueryInfo extends Component {
 
   get table () {
     return (
-      <Table>
+      <Table className={styles.table}>
         <TableBody>
           { this.properties }
         </TableBody>
