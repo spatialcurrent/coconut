@@ -48,7 +48,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['docs']),
     new CopyWebpackPlugin([{
       from: 'images',
       to: 'images',

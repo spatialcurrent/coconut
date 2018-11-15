@@ -1,3 +1,3 @@
-import getFeatures from './get-features.action.js';
+import getFeatures from './get-features.action';
 
 export default getFeatures;

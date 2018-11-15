@@ -9,6 +9,7 @@
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack/webpack.dev.js --port 8081",
     "test": ""
   },
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spatialcurrent/coconut.git"
@@ -35,6 +36,7 @@
     "enzyme": "^3.6.0",
     "eslint": "^5.6.1",
     "eslint-config-airbnb": "^17.1.0",
+    "eslint-loader": "^2.1.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
