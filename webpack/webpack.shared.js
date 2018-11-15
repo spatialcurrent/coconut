@@ -59,6 +59,7 @@ module.exports = {
     ]),
     // new FaviconsWebpackPlugin('./assets/favicon.png'),
     new HtmlWebpackPlugin({
+      api_url: process.env.API_URL || 'http://localhost:8080',
       template: 'index.html',
       title: 'Coconut',
     })
