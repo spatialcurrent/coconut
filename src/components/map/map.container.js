@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import clearFeature from 'actions/clear-feature';
 import setFeature from 'actions/set-feature';
 import Map from './map.component';
 
@@ -11,6 +12,7 @@ function mapState ({ feature, features }) {
 
 function mapDispatch (dispatch) {
   return {
+    clearFeature: () => dispatch(clearFeature()),
     setFeature: feature => dispatch(setFeature(feature)),
   };
 }

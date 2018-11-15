@@ -21,6 +21,7 @@ const SELECTED_FEATURE_STROKE_WIDTH = 3;
 
 export default class extends Component {
   static propTypes = {
+    clearFeature: PropTypes.func.isRequired,
     feature: PropTypes.object,
     features: PropTypes.object,
     setFeature: PropTypes.func.isRequired,
@@ -47,6 +48,10 @@ export default class extends Component {
     if (layer && !feature && feature !== prevProps.feature) {
       select.getFeatures().clear();
     }
+  }
+
+  componentWillUnmount () {
+    this.props.clearFeature();
   }
 
   addSelect () {
