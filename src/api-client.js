@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: window.API_URL,
+  baseURL: window.API_URL, // eslint-disable-line
   headers: { 'Content-Type': 'application/json' },
 });
 
