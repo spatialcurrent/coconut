@@ -36,9 +36,14 @@ jobs:
       - store_artifacts:
           path: dist
           destination: /
-      - run: sudo apt-get install python-dev python-pip
-      - run: pip install awscli --upgrade --user
-      - run: python -m awscli s3 sync dist ${AWS_S3_BUCKET}
+      - run:
+          name: Upload to S3
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              sudo apt-get install python-dev python-pip
+              pip install awscli --upgrade --user
+              python -m awscli s3 sync dist s3://${AWS_S3_BUCKET}
+            fi
 workflows:
   main:
     jobs:
