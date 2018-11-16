@@ -36,6 +36,9 @@ jobs:
       - store_artifacts:
           path: dist
           destination: /
+      - run: sudo apt-get install python-dev python-pip
+      - run: pip install awscli --upgrade --user
+      - run: aws s3 sync dist ${AWS_S3_BUCKET}
 workflows:
   main:
     jobs:
