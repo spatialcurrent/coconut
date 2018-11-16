@@ -1,4 +1,5 @@
-node_modules/
-dist/
-webpack/
 *.test.js
+__mocks__/
+dist/
+node_modules/
+webpack/

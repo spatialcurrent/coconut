@@ -11,7 +11,7 @@ function mapState ({ queries }) {
 
 function mapDispatch (dispatch) {
   return {
-    getFeatures: params => dispatch(getFeatures(params)),
+    getFeatures: service => dispatch(getFeatures({ service })),
     loadQueries: () => dispatch(loadQueries()),
   };
 }
