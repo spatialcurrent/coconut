@@ -48,15 +48,16 @@ module.exports = {
     ],
   },
   plugins: [
-    new CopyWebpackPlugin([{
-      from: 'images',
-      to: 'images',
-    },
-      // {
-      //   from: './assets/favicon.png',
-      //   to: 'favicon.png'
-      // },
-    ]),
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: 'images',
+    //     to: 'images',
+    //   },
+    //   {
+    //     from: './assets/favicon.png',
+    //     to: 'favicon.png'
+    //   },
+    // ]),
     // new FaviconsWebpackPlugin('./assets/favicon.png'),
     new HtmlWebpackPlugin({
       api_url: process.env.API_URL || 'http://localhost:8080',
