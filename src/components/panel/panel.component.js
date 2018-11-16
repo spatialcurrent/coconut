@@ -66,7 +66,6 @@ export default class Panel extends Component {
           <Typography
             color="textPrimary"
             component="h1"
-            gutterBottom
             variant="title"
           >
             { this.title }

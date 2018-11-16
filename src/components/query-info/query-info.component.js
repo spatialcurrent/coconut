@@ -85,7 +85,6 @@ export default class QueryInfo extends Component {
           className={styles.button}
           color="secondary"
           disabled={this.disabled}
-          gutterBottom
           onClick={() => this.setState({ open: true })}
           variant="fab"
         >
