@@ -6,7 +6,7 @@ import loadQueries from './load-queries.action';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('action: loadQueries', () => {
+describe('Action: loadQueries', () => {
   it('creates a get query action', async () => {
     const store = mockStore({ queries: [] });
     const updatedStore = await store.dispatch(loadQueries());

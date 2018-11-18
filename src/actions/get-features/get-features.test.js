@@ -15,7 +15,7 @@ import getFeatures from './get-features.action';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('action: getFeatures', () => {
+describe('Action: getFeatures', () => {
   it('creates open loader, get features, get query, and close loader actions', async () => {
     const store = mockStore({
       features: null,

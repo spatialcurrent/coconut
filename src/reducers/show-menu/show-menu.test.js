@@ -1,7 +1,7 @@
 import { CLOSE_MENU, OPEN_MENU } from 'action-types';
 import showMenuReducer from './show-menu.reducer';
 
-describe('reducer: showMenu', () => {
+describe('Reducer: showMenu', () => {
   it('opens menu', () => {
     const action = { type: OPEN_MENU };
     const state = showMenuReducer(false, action);

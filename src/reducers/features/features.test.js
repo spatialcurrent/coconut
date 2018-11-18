@@ -1,7 +1,7 @@
 import { CLEAR_FEATURES, GET_FEATURES } from 'action-types';
 import featuresReducer from './features.reducer';
 
-describe('reducer: features', () => {
+describe('Reducer: features', () => {
   it('gets features', () => {
     const features = [{ id: 1 }, { id: 2 }];
     const action = { features: features, type: GET_FEATURES };

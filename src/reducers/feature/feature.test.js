@@ -1,7 +1,7 @@
 import { CLEAR_FEATURE, SET_FEATURE } from 'action-types';
 import featureReducer from './feature.reducer';
 
-describe('reducer: feature', () => {
+describe('Reducer: feature', () => {
   it('sets a feature', () => {
     const action = { feature: { id: 1 }, type: SET_FEATURE };
     const expectedState = { id: 1 };

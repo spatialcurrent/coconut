@@ -9,7 +9,7 @@ import getQuery from './get-query.action';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('action: getQuery', () => {
+describe('Action: getQuery', () => {
   it('creates a get query action', async () => {
     const store = mockStore({ query: null });
     const updatedStore = await store.dispatch(getQuery('test-service'));

@@ -1,7 +1,7 @@
 import { CLOSE_LOADER, OPEN_LOADER } from 'action-types';
 import showLoaderReducer from './show-loader.reducer';
 
-describe('reducer: showLoader', () => {
+describe('Reducer: showLoader', () => {
   it('opens the loader', () => {
     const action = { type: OPEN_LOADER };
     const state = showLoaderReducer(false, action);
