@@ -5,6 +5,7 @@
     "arrow-parens": ["error", "as-needed"],
     "class-methods-use-this": "off",
     "comma-dangle": ["error", { "objects": "always-multiline" }],
+    "import/no-named-as-default": "off",
     "import/no-unresolved": "off",
     "no-use-before-define": "off",
     "object-curly-newline": "off",

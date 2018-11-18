@@ -10,6 +10,7 @@ describe('Component: Queries', () => {
       history: { push: jest.fn() },
       loadQueries: jest.fn(),
       queries: [],
+      stars: [],
     };
   });
 
