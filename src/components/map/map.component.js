@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GeoJSON from 'ol/format/GeoJSON';
-import Map from 'ol/Map';
+import OLMap from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import Select from 'ol/interaction/Select';
 import TileLayer from 'ol/layer/Tile';
@@ -19,7 +19,7 @@ const FEATURE_STROKE_WIDTH = 2;
 const SELECTED_FEATURE_RADIUS = 10;
 const SELECTED_FEATURE_STROKE_WIDTH = 3;
 
-export default class extends Component {
+export default class Map extends Component {
   static propTypes = {
     clearFeature: PropTypes.func.isRequired,
     feature: PropTypes.object,
@@ -98,7 +98,7 @@ export default class extends Component {
   }
 
   map () {
-    return new Map({
+    return new OLMap({
       controls: this.controls(),
       layers: [this.basemap()],
       target: 'map',
