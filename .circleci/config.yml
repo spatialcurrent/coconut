@@ -43,6 +43,7 @@ jobs:
               sudo apt-get install python-dev python-pip
               pip install awscli --upgrade --user
               python -m awscli s3 sync dist s3://${AWS_S3_BUCKET}
+              python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths '/*'
             fi
 workflows:
   main:
