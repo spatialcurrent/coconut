@@ -6,26 +6,26 @@ const client = axios.create({
 });
 
 export async function executeService ({ service }) {
-  const { data } = await client.post('/services/exec.json', { service });
+  const { data } = await client.post(`/services/${service}/exec.json`);
   return data;
 }
 
 export async function getProcess (process) {
   const { data } = await client.get(`/processes/${process}.json`);
-  return data.process;
+  return data.item;
 }
 
 export async function getProcesses () {
   const { data } = await client.get('/processes.json');
-  return data.processes;
+  return data.items;
 }
 
 export async function getService (service) {
   const { data } = await client.get(`/services/${service}.json`);
-  return data.service;
+  return data.item;
 }
 
 export async function getServices () {
   const { data } = await client.get('/services.json');
-  return data.services;
+  return data.items;
 }
