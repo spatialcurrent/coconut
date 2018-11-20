@@ -55,4 +55,5 @@ workflows:
       - build_webpack:
           requires:
             - pre_deps_javascript
+            - test
 
