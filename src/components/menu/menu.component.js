@@ -18,7 +18,7 @@ export default class Menu extends Component {
 
   get links () {
     return links.map(({ to, text }) => {
-      if (text.startsWith('http')) {
+      if (to.startsWith('http')) {
         return (
           <a key={text} href={to}>
             <ListItem button>
