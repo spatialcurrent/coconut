@@ -16,7 +16,7 @@ export default [
     to: 'https://spatialcurrent.io/open-source/',
   },
   {
-    text: 'Spatal Current, Inc.',
+    text: 'Spatial Current, Inc.',
     to: 'https://spatialcurrent.io/company/',
   },
   {

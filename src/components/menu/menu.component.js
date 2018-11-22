@@ -17,14 +17,26 @@ export default class Menu extends Component {
   }
 
   get links () {
-    return links.map(({ to, text }) => (
-      <Link key={text} to={to}>
-        <ListItem button>
-          <ListItemText primary={text} />
-        </ListItem>
-        <Divider />
-      </Link>
-    ));
+    return links.map(({ to, text }) => {
+      if (text.startswith('http')) {
+        return (
+          <a key={text} href={to}>
+            <ListItem button>
+              <ListItemText primary={text} />
+            </ListItem>
+            <Divider />
+          </a>
+        );
+      }
+      return (
+        <Link key={text} to={to}>
+          <ListItem button>
+            <ListItemText primary={text} />
+          </ListItem>
+          <Divider />
+        </Link>
+      );
+    });
   }
 
   render () {
