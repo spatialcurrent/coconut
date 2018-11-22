@@ -37,7 +37,7 @@ export default class Panel extends Component {
 
   get properties () {
     const { properties } = this.props.feature;
-    return Object.keys(properties).map(key => (
+    return Object.keys(properties).filter(key => key[0] !== '_').map(key => (
       <TableRow key={key}>
         <TableCell component="th" scope="row">
           { key }
