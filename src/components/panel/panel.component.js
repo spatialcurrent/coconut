@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@material-ui/icons/Close';
 import Divider from '@material-ui/core/Divider';
@@ -13,6 +13,18 @@ import Typography from '@material-ui/core/Typography';
 import styles from './panel.styles.scss';
 
 const MOBILE_WIDTH = 650;
+
+function TableCellContent ({ text }) {
+  if (text.startsWith('http://') || text.startsWith('https://')) {
+    return <a title={text} href={text}>{text}</a>;
+  }
+  return <Fragment>{text}</Fragment>;
+}
+
+TableCellContent.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
 export default class Panel extends Component {
   static propTypes = {
     clearFeature: PropTypes.func.isRequired,
@@ -43,7 +55,7 @@ export default class Panel extends Component {
           { key }
         </TableCell>
         <TableCell>
-          { properties[key] }
+          <TableCellContent text={properties[key]} />
         </TableCell>
       </TableRow>
     ));
