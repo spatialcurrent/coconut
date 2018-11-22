@@ -15,8 +15,10 @@ import styles from './panel.styles.scss';
 const MOBILE_WIDTH = 650;
 
 function TableCellContent ({ text }) {
-  if (text.startsWith('http://') || text.startsWith('https://')) {
-    return <a title={text} href={text}>{text}</a>;
+  if (typeof text === 'string' || text instanceof String) {
+    if (text.startsWith('http://') || text.startsWith('https://')) {
+      return <a title={text} href={text}>{text}</a>;
+    }
   }
   return <Fragment>{text}</Fragment>;
 }
