@@ -14,17 +14,30 @@ import styles from './panel.styles.scss';
 
 const MOBILE_WIDTH = 650;
 
-function TableCellContent ({ text }) {
-  if (typeof text === 'string' || text instanceof String) {
-    if (text.startsWith('http://') || text.startsWith('https://')) {
-      return <a title={text} href={text}>{text}</a>;
+function PropertyValue ({ name, value }) {
+  if (typeof value === 'string' || value instanceof String) {
+    if (value.startsWith('http://') || value.startsWith('https://')) {
+      return <a title={value} href={value} style={{ wordBreak: 'break-all' }}>{value}</a>;
+    }
+    if (name === 'wikidata' || name === 'brand:wikidata') {
+      return <a title={value} href={`https://www.wikidata.org/wiki/${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
+    }
+    if (name === 'wikipedia') {
+      const i = value.indexOf(':');
+      if (i >= 0) {
+        const language = value.substr(0, i);
+        const article = value.substr(i + 1);
+        return <a title={value} href={`https://${language}.wikipedia.org/wiki/${article}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
+      }
+      return <a title={value} href={`https://en.wikipedia.org/wiki/${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
   }
-  return <Fragment>{text}</Fragment>;
+  return <Fragment>{value}</Fragment>;
 }
 
-TableCellContent.propTypes = {
-  text: PropTypes.string.isRequired,
+PropertyValue.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.object.isRequired,
 };
 
 export default class Panel extends Component {
@@ -57,7 +70,7 @@ export default class Panel extends Component {
           { key }
         </TableCell>
         <TableCell>
-          <TableCellContent text={properties[key]} />
+          <PropertyValue name={key} value={properties[key]} />
         </TableCell>
       </TableRow>
     ));
