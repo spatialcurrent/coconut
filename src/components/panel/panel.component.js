@@ -19,7 +19,7 @@ function PropertyValue ({ name, value }) {
     if (value.startsWith('http://') || value.startsWith('https://')) {
       return <a title={value} href={value} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
-    if (name === 'website' && value.startsWith('www.')) {
+    if ((name === 'website' || name === 'contact:website') && value.startsWith('www.')) {
       return <a title={value} href={`http://${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
     if (name === 'contact:email' && value.indexOf('@') > 0) {

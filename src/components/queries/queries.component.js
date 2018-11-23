@@ -33,41 +33,49 @@ export default class Queries extends Component {
 
   get queries () {
     const { getFeatures } = this.props;
-    return this.props.queries.map(({ datastore, description, service, title }) => (
-      <Card key={service} className={styles.query}>
-        <CardHeader
-          action={
-            (
-              <IconButton aria-label="Add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-            )
-          }
-          title={title}
-          subheader=""
-          component="h2"
-        />
-        <CardContent className={styles.queryContent}>
-          <Typography component="h3">
-            { `Data Store: ${datastore}` }
-          </Typography>
-          <Typography component="p">
-            { description }
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Link className={styles.link} to="/">
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => getFeatures({ service })}
-            >
-              Use query
-            </Button>
-          </Link>
-        </CardActions>
-      </Card>
-    ));
+    return this.props.queries
+      .sort(function(a, b){
+        const a_title = a.title.toLowerCase();
+        const b_title = b.title.toLowerCase();
+        if(a_title < b_title) { return -1; }
+        if(a_title > b_title) { return 1; }
+        return 0;
+      })
+      .map(({ datastore, description, service, title }) => (
+        <Card key={service} className={styles.query}>
+          <CardHeader
+            action={
+              (
+                <IconButton aria-label="Add to favorites">
+                  <FavoriteIcon />
+                </IconButton>
+              )
+            }
+            title={title}
+            subheader=""
+            component="h2"
+          />
+          <CardContent className={styles.queryContent}>
+            <Typography component="h3">
+              { `Data Store: ${datastore}` }
+            </Typography>
+            <Typography component="p">
+              { description }
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Link className={styles.link} to="/">
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => getFeatures({ service })}
+              >
+                Use query
+              </Button>
+            </Link>
+          </CardActions>
+        </Card>
+      ));
   }
 
   handleClose () {
