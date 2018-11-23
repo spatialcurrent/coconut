@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -33,10 +35,19 @@ export default class Queries extends Component {
     const { getFeatures } = this.props;
     return this.props.queries.map(({ datastore, description, service, title }) => (
       <Card key={service} className={styles.query}>
+        <CardHeader
+          action={
+            (
+              <IconButton aria-label="Add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+            )
+          }
+          title={title}
+          subheader=""
+          component="h2"
+        />
         <CardContent className={styles.queryContent}>
-          <Typography variant="title" component="h2">
-            { title }
-          </Typography>
           <Typography component="h3">
             { `Data Store: ${datastore}` }
           </Typography>
