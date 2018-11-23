@@ -1,3 +1,4 @@
+/* global localStorage */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -22,6 +23,7 @@ export default class Queries extends Component {
     history: PropTypes.object.isRequired,
     loadQueries: PropTypes.func.isRequired,
     queries: PropTypes.array.isRequired,
+    stars: PropTypes.array.isRequired,
   }
 
   componentDidMount () {
@@ -31,14 +33,21 @@ export default class Queries extends Component {
     }
   }
 
+  get stars () {
+    return localStorage.getItem('stars') || [];
+  }
+
   get queries () {
     const { getFeatures } = this.props;
+    const stars = this.stars;
     return this.props.queries
-      .sort(function(a, b){
-        const a_title = a.title.toLowerCase();
-        const b_title = b.title.toLowerCase();
-        if(a_title < b_title) { return -1; }
-        if(a_title > b_title) { return 1; }
+      .sort((a, b) => {
+        const aTitle = a.title.toLowerCase();
+        const bTitle = b.title.toLowerCase();
+        if (stars.includes(a.name) && !stars.includes(b.name)) { return -1; }
+        if ((!stars.includes(a.name)) && stars.includes(b.name)) { return 1; }
+        if (aTitle < bTitle) { return -1; }
+        if (aTitle > bTitle) { return 1; }
         return 0;
       })
       .map(({ datastore, description, service, title }) => (
