@@ -24,7 +24,7 @@ export default class Loader extends Component {
     clearInterval(this.timer);
   }
 
-  progress () {
+  progress = () => {
     const { completed } = this.state;
     if (completed === 100) {
       this.setState({ completed: 0 });

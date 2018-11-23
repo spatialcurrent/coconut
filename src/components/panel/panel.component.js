@@ -19,6 +19,9 @@ function PropertyValue ({ name, value }) {
     if (value.startsWith('http://') || value.startsWith('https://')) {
       return <a title={value} href={value} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
+    if (name === 'website' && value.startsWith('www.')) {
+      return <a title={value} href={`http://${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
+    }
     if (name === 'phone' || name === 'phone_1') {
       return <a title={value} href={`tel:${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
