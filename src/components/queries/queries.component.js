@@ -34,11 +34,11 @@ export default class Queries extends Component {
   get queries () {
     const { getFeatures } = this.props;
     return this.props.queries
-      .sort(function(a, b){
-        const a_title = a.title.toLowerCase();
-        const b_title = b.title.toLowerCase();
-        if(a_title < b_title) { return -1; }
-        if(a_title > b_title) { return 1; }
+      .sort((a, b) => {
+        const aTitle = a.title.toLowerCase();
+        const bTitle = b.title.toLowerCase();
+        if (aTitle < bTitle) { return -1; }
+        if (aTitle > bTitle) { return 1; }
         return 0;
       })
       .map(({ datastore, description, service, title }) => (
