@@ -50,12 +50,15 @@ export default class Queries extends Component {
         if (aTitle > bTitle) { return 1; }
         return 0;
       })
-      .map(({ datastore, description, service, title }) => (
+      .map(({ name, title, datastore, description, service }) => (
         <Card key={service} className={styles.query}>
           <CardHeader
             action={
               (
-                <IconButton aria-label="Add to favorites">
+                <IconButton
+                  aria-label="Toggle favorite"
+                  color={stars.includes(name) ? 'primary' : 'default'}
+                >
                   <FavoriteIcon />
                 </IconButton>
               )
