@@ -57,7 +57,8 @@ export default class Queries extends Component {
               (
                 <IconButton
                   aria-label="Toggle favorite"
-                  color={stars.includes(name) ? 'primary' : 'default'}>
+                  color={stars.includes(name) ? 'primary' : 'default'}
+                >
                   <FavoriteIcon />
                 </IconButton>
               )
