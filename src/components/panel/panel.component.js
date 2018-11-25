@@ -22,7 +22,7 @@ function PropertyValue ({ name, value }) {
     if ((name === 'website' || name === 'contact:website') && value.startsWith('www.')) {
       return <a title={value} href={`http://${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
-    if (name === 'contact:email' && value.indexOf('@') > 0) {
+    if ((name === 'email' && name === 'contact:email') && value.indexOf('@') > 0) {
       return <a title={value} href={`mailto:${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
     if (name === 'phone' || name === 'phone_1' || name === 'fax') {
@@ -40,12 +40,24 @@ function PropertyValue ({ name, value }) {
       }
       return <a title={value} href={`https://en.wikipedia.org/wiki/${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
-    if (name === 'opening_hours' && value.includes(';')) {
-      return value.split(';')
-        .map(line => line.replace(new RegExp('-', 'g'), ' - '))
-        .map(line => (
-          <div style={{ wordBreak: 'break-all' }}>{line}</div>
-        ));
+    if (name === 'opening_hours') {
+      if (value.includes(';')) {
+        return value.split(';')
+          .map(line => line.replace(new RegExp('-', 'g'), ' - '))
+          .map(line => (
+            <div style={{ wordBreak: 'break-all' }}>{line}</div>
+          ));
+      }
+      return value.replace(new RegExp('-', 'g'), ' - ');
+    }
+    if (name === 'cuisine') {
+      if (value.includes(';')) {
+        return value.split(';')
+          .map(line => (
+            <div style={{ wordBreak: 'break-all' }}>{line}</div>
+          ));
+      }
+      return value;
     }
   }
   return <Fragment>{value}</Fragment>;
