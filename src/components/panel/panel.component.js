@@ -25,13 +25,13 @@ function PropertyValue ({ name, value }) {
     if ((name === 'email' || name === 'contact:email') && value.indexOf('@') > 0) {
       return <a title={value} href={`mailto:${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
-    if (name === 'phone' || name === 'phone_1' || name === 'fax') {
+    if (name === 'phone' || name === 'phone_1' || name === 'fax' || name === 'contact:phone') {
       return <a title={value} href={`tel:${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
     if (name === 'wikidata' || name === 'brand:wikidata') {
       return <a title={value} href={`https://www.wikidata.org/wiki/${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
     }
-    if (name === 'wikipedia') {
+    if (name === 'wikipedia' || name === 'brand:wikipedia') {
       const i = value.indexOf(':');
       if (i >= 0) {
         const language = value.substr(0, i);
