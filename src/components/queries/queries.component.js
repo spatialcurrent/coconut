@@ -1,4 +1,3 @@
-/* global localStorage */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -12,18 +11,18 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import styles from './queries.styles.scss';
 
 export default class Queries extends Component {
   static propTypes = {
+    favoriteQuery: PropTypes.func.isRequired,
     getFeatures: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     loadQueries: PropTypes.func.isRequired,
     queries: PropTypes.array.isRequired,
-    stars: PropTypes.array.isRequired,
+    unfavoriteQuery: PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -33,69 +32,74 @@ export default class Queries extends Component {
     }
   }
 
-  get stars () {
-    return localStorage.getItem('stars') || [];
+  get cards () {
+    const { getFeatures } = this.props;
+    return this.queries.map(({ favorite, name, title, datastore, description, service }) => (
+      <Card key={service} className={styles.query}>
+        <CardHeader
+          action={this.iconButton(name, favorite)}
+          title={title}
+          subheader=""
+          component="h2"
+        />
+        <CardContent className={styles.queryContent}>
+          <Typography component="h3">
+            { `Data Store: ${datastore}` }
+          </Typography>
+          <Typography component="p">
+            { description }
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Link className={styles.link} to="/">
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => getFeatures({ service })}
+            >
+              Use query
+            </Button>
+          </Link>
+        </CardActions>
+      </Card>
+    ));
   }
 
   get queries () {
-    const { getFeatures } = this.props;
-    const stars = this.stars;
-    return this.props.queries
-      .sort((a, b) => {
-        const aTitle = a.title.toLowerCase();
-        const bTitle = b.title.toLowerCase();
-        if (stars.includes(a.name) && !stars.includes(b.name)) { return -1; }
-        if ((!stars.includes(a.name)) && stars.includes(b.name)) { return 1; }
-        if (aTitle < bTitle) { return -1; }
-        if (aTitle > bTitle) { return 1; }
-        return 0;
-      })
-      .map(({ name, title, datastore, description, service }) => (
-        <Card key={service} className={styles.query}>
-          <CardHeader
-            action={
-              (
-                <IconButton
-                  aria-label="Toggle favorite"
-                  color={stars.includes(name) ? 'primary' : 'default'}
-                >
-                  <FavoriteIcon />
-                </IconButton>
-              )
-            }
-            title={title}
-            subheader=""
-            component="h2"
-          />
-          <CardContent className={styles.queryContent}>
-            <Typography component="h3">
-              { `Data Store: ${datastore}` }
-            </Typography>
-            <Typography component="p">
-              { description }
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Link className={styles.link} to="/">
-              <Button
-                size="small"
-                color="primary"
-                onClick={() => getFeatures({ service })}
-              >
-                Use query
-              </Button>
-            </Link>
-          </CardActions>
-        </Card>
-      ));
+    return this.props.queries.sort((a, b) => {
+      if (a.favorite && !b.favorite) return -1;
+      if (b.favorite && !a.favorite) return 1;
+      const aTitle = a.title.toLowerCase();
+      const bTitle = b.title.toLowerCase();
+      if (aTitle < bTitle) { return -1; }
+      if (aTitle > bTitle) { return 1; }
+      return 0;
+    });
+  }
+
+  iconButton (name, favorite) {
+    return (
+      <IconButton
+        aria-label="Toggle favorite"
+        color={favorite ? 'secondary' : 'default'}
+        onClick={() => this.toggleFavorite(name, favorite)}
+      >
+        <FavoriteIcon />
+      </IconButton>
+    );
   }
 
   handleClose () {
     this.props.history.push('/');
   }
 
-  transition (props) {
-    return <Slide direction="up" {...props} />;
+  toggleFavorite (name, favorite) {
+    const { favoriteQuery, unfavoriteQuery } = this.props;
+    if (favorite) {
+      unfavoriteQuery(name);
+    } else {
+      favoriteQuery(name);
+    }
   }
 
   render () {
@@ -104,7 +108,6 @@ export default class Queries extends Component {
         fullScreen
         onClose={this.handleClose}
         open
-        TransitionComponent={::this.transition}
       >
         <AppBar position="static">
           <Toolbar>
@@ -117,7 +120,7 @@ export default class Queries extends Component {
           </Toolbar>
         </AppBar>
         <div className={styles.queries}>
-          { this.queries }
+          { this.cards }
         </div>
       </Dialog>
     );

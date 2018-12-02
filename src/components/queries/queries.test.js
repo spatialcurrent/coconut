@@ -6,11 +6,12 @@ let props;
 describe('Component: Queries', () => {
   beforeEach(() => {
     props = {
+      favoriteQuery: jest.fn(),
       getFeatures: jest.fn(),
       history: { push: jest.fn() },
       loadQueries: jest.fn(),
       queries: [],
-      stars: [],
+      unfavoriteQuery: jest.fn(),
     };
   });
 
