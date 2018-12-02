@@ -34,8 +34,8 @@ export default class Queries extends Component {
 
   get cards () {
     const { getFeatures } = this.props;
-    return this.queries.map(({ favorite, name, title, datastore, description, service }) => (
-      <Card key={service} className={styles.query}>
+    return this.queries.map(({ favorite, name, title, datastore, description }) => (
+      <Card key={name} className={styles.query}>
         <CardHeader
           action={this.iconButton(name, favorite)}
           title={title}
@@ -55,7 +55,7 @@ export default class Queries extends Component {
             <Button
               size="small"
               color="primary"
-              onClick={() => getFeatures({ service })}
+              onClick={() => getFeatures(name)}
             >
               Use query
             </Button>
