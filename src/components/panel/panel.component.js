@@ -65,7 +65,7 @@ function PropertyValue ({ name, value }) {
 
 PropertyValue.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.object.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 export default class Panel extends Component {

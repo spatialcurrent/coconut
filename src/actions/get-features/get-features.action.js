@@ -9,7 +9,7 @@ export default function (params) {
     dispatch(openLoader());
     const features = await executeService(params);
     dispatch({ features, type: GET_FEATURES });
-    dispatch(getQuery(params.service));
+    await dispatch(getQuery(params.service));
     return dispatch(closeLoader());
   };
 }

@@ -25,6 +25,7 @@ jobs:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
       - run: npm run lint
+      - run: npm test
   build_webpack:
     executor: base
     steps:
