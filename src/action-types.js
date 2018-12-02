@@ -1,10 +1,12 @@
-export const CLEAR_FEATURES = 'CLEAR_FEATURES';
 export const CLEAR_FEATURE = 'CLEAR_FEATURE';
+export const CLEAR_FEATURES = 'CLEAR_FEATURES';
 export const CLOSE_LOADER = 'CLOSE_LOADER';
 export const CLOSE_MENU = 'CLOSE_MENU';
+export const FAVORITE_QUERY = 'FAVORITE_QUERY';
 export const GET_FEATURES = 'GET_FEATURES';
+export const GET_QUERY = 'GET_QUERY';
 export const LOAD_QUERIES = 'LOAD_QUERIES';
 export const OPEN_LOADER = 'OPEN_LOADER';
 export const OPEN_MENU = 'OPEN_MENU';
 export const SET_FEATURE = 'SET_FEATURE';
-export const GET_QUERY = 'GET_QUERY';
+export const UNFAVORITE_QUERY = 'UNFAVORITE_QUERY';

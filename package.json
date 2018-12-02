@@ -66,6 +66,7 @@
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
     "es6-promise": "^4.2.5",
+    "lodash.uniqby": "^4.7.0",
     "ol": "^5.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
