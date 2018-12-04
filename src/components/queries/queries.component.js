@@ -57,7 +57,7 @@ export default class Queries extends Component {
               color="primary"
               onClick={() => getFeatures(name)}
             >
-              Use query
+              Show on Map
             </Button>
           </Link>
         </CardActions>
