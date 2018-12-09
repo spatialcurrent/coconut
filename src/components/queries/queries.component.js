@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import styles from './queries.styles.scss';
@@ -25,6 +26,10 @@ export default class Queries extends Component {
     unfavoriteQuery: PropTypes.func.isRequired,
   }
 
+  state = {
+    search: '',
+  }
+
   componentDidMount () {
     const { loadQueries, queries } = this.props;
     if (!queries.length) {
@@ -34,7 +39,7 @@ export default class Queries extends Component {
 
   get cards () {
     const { getFeatures } = this.props;
-    return this.queries.map(({ favorite, name, title, datastore, description }) => (
+    return this.queries.map(({ datastore, description, favorite, name, title }) => (
       <Card key={name} className={styles.query}>
         <CardHeader
           action={this.iconButton(name, favorite)}
@@ -66,15 +71,9 @@ export default class Queries extends Component {
   }
 
   get queries () {
-    return this.props.queries.sort((a, b) => {
-      if (a.favorite && !b.favorite) return -1;
-      if (b.favorite && !a.favorite) return 1;
-      const aTitle = a.title.toLowerCase();
-      const bTitle = b.title.toLowerCase();
-      if (aTitle < bTitle) { return -1; }
-      if (aTitle > bTitle) { return 1; }
-      return 0;
-    });
+    return this.props.queries
+      .sort(this.sortQueries)
+      .filter(::this.filterQueries);
   }
 
   iconButton (name, favorite) {
@@ -91,6 +90,28 @@ export default class Queries extends Component {
 
   handleClose () {
     this.props.history.push('/');
+  }
+
+  handleSearch (e) {
+    const search = e.target.value;
+    this.setState({ search });
+  }
+
+  filterQueries ({ name, title }) {
+    const search = this.state.search.toLowerCase();
+    if (name.toLowerCase().includes(search)) return true;
+    if (title.toLowerCase().includes(search)) return true;
+    return false;
+  }
+
+  sortQueries (a, b) {
+    if (a.favorite && !b.favorite) return -1;
+    if (b.favorite && !a.favorite) return 1;
+    const aTitle = a.title.toLowerCase();
+    const bTitle = b.title.toLowerCase();
+    if (aTitle < bTitle) return -1;
+    if (aTitle > bTitle) return 1;
+    return 0;
   }
 
   toggleFavorite (name, favorite) {
@@ -119,6 +140,21 @@ export default class Queries extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
+        <div className={styles.search}>
+          <TextField
+            fullWidth
+            id="search"
+            label="Search"
+            margin="normal"
+            onChange={::this.handleSearch}
+            placeholder="Thai food"
+            value={this.state.search}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
         <div className={styles.queries}>
           { this.cards }
         </div>
