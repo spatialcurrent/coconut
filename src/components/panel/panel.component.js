@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@material-ui/icons/Close';
 import Divider from '@material-ui/core/Divider';
@@ -13,60 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import styles from './panel.styles.scss';
 
 const MOBILE_WIDTH = 650;
-
-function PropertyValue ({ name, value }) {
-  if (typeof value === 'string' || value instanceof String) {
-    if (value.startsWith('http://') || value.startsWith('https://')) {
-      return <a title={value} href={value} style={{ wordBreak: 'break-all' }}>{value}</a>;
-    }
-    if ((name === 'website' || name === 'contact:website') && value.startsWith('www.')) {
-      return <a title={value} href={`http://${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
-    }
-    if ((name === 'email' || name === 'contact:email') && value.indexOf('@') > 0) {
-      return <a title={value} href={`mailto:${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
-    }
-    if (name === 'phone' || name === 'phone_1' || name === 'fax' || name === 'contact:phone') {
-      return <a title={value} href={`tel:${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
-    }
-    if (name === 'wikidata' || name === 'brand:wikidata') {
-      return <a title={value} href={`https://www.wikidata.org/wiki/${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
-    }
-    if (name === 'wikipedia' || name === 'brand:wikipedia') {
-      const i = value.indexOf(':');
-      if (i >= 0) {
-        const language = value.substr(0, i);
-        const article = value.substr(i + 1);
-        return <a title={value} href={`https://${language}.wikipedia.org/wiki/${article}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
-      }
-      return <a title={value} href={`https://en.wikipedia.org/wiki/${value}`} style={{ wordBreak: 'break-all' }}>{value}</a>;
-    }
-    if (name === 'opening_hours') {
-      if (value.includes(';')) {
-        return value.split(';')
-          .map(line => line.replace(new RegExp('-', 'g'), ' - '))
-          .map(line => (
-            <div style={{ wordBreak: 'break-all' }}>{line}</div>
-          ));
-      }
-      return value.replace(new RegExp('-', 'g'), ' - ');
-    }
-    if (name === 'cuisine') {
-      if (value.includes(';')) {
-        return value.split(';')
-          .map(line => (
-            <div style={{ wordBreak: 'break-all' }}>{line}</div>
-          ));
-      }
-      return value;
-    }
-  }
-  return <Fragment>{value}</Fragment>;
-}
-
-PropertyValue.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-};
 
 export default class Panel extends Component {
   static propTypes = {
@@ -92,16 +38,18 @@ export default class Panel extends Component {
 
   get properties () {
     const { properties } = this.props.feature;
-    return Object.keys(properties).filter(key => key[0] !== '_').map(key => (
-      <TableRow key={key}>
-        <TableCell component="th" scope="row">
-          { key }
-        </TableCell>
-        <TableCell>
-          <PropertyValue name={key} value={properties[key]} />
-        </TableCell>
-      </TableRow>
-    ));
+    return Object.keys(properties)
+      .filter(this.isPublicValue)
+      .map(key => (
+        <TableRow key={key}>
+          <TableCell component="th" scope="row">
+            { key }
+          </TableCell>
+          <TableCell>
+            { this.value(key, properties[key]) }
+          </TableCell>
+        </TableRow>
+      ));
   }
 
   get panel () {
@@ -145,6 +93,57 @@ export default class Panel extends Component {
         </TableBody>
       </Table>
     );
+  }
+
+  isPublicValue (key) {
+    return key[0] !== '_';
+  }
+
+  value (key, value) {
+    if (typeof value === 'string' || value instanceof String) {
+      if (value.startsWith('http://') || value.startsWith('https://')) {
+        return <a title={value} href={value} className={styles.value}>{ value }</a>;
+      }
+      if ((key === 'website' || key === 'contact:website') && value.startsWith('www.')) {
+        return <a title={value} href={`http://${value}`} className={styles.value}>{ value }</a>;
+      }
+      if ((key === 'email' || key === 'contact:email') && value.indexOf('@') > 0) {
+        return <a title={value} href={`mailto:${value}`} className={styles.value}>{ value }</a>;
+      }
+      if (key === 'phone' || key === 'phone_1' || key === 'fax' || key === 'contact:phone') {
+        return <a title={value} href={`tel:${value}`} className={styles.value}>{ value }</a>;
+      }
+      if (key === 'wikidata' || key === 'brand:wikidata') {
+        return <a title={value} href={`https://www.wikidata.org/wiki/${value}`} className={styles.value}>{ value }</a>;
+      }
+      if (key === 'wikipedia' || key === 'brand:wikipedia') {
+        const i = value.indexOf(':');
+        if (i >= 0) {
+          const language = value.substr(0, i);
+          const article = value.substr(i + 1);
+          return <a title={value} href={`https://${language}.wikipedia.org/wiki/${article}`} className={styles.value}>{ value }</a>;
+        }
+        return <a title={value} href={`https://en.wikipedia.org/wiki/${value}`} className={styles.value}>{ value }</a>;
+      }
+      if (key === 'opening_hours') {
+        if (value.includes(';')) {
+          return value.split(';')
+            .map(line => line.replace(new RegExp('-', 'g'), ' - '))
+            .map(line => (
+              <div className={styles.value}>{line}</div>
+            ));
+        }
+        return value.replace(new RegExp('-', 'g'), ' - ');
+      }
+      if (key === 'cuisine') {
+        if (value.includes(';')) {
+          return value.split(';').map(line => (
+            <div className={styles.value}>{line}</div>
+          ));
+        }
+      }
+    }
+    return value;
   }
 
   render () {
