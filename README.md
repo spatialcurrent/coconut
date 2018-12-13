@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/spatialcurrent/coconut/tree/master.svg?style=svg)](https://circleci.com/gh/spatialcurrent/coconut/tree/master) [![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://github.com/spatialcurrent/coconut/blob/master/LICENSE) 
+[![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://github.com/spatialcurrent/coconut/blob/master/LICENSE) 
 
 # coconut 
 
