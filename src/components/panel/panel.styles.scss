@@ -37,6 +37,10 @@ $tablet-width: 900px;
   }
 }
 
+.value {
+  word-break: break-all;
+}
+
 @media (max-width: $tablet-width) {
   .content h1 {
     padding: 8px;
