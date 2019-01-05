@@ -61,6 +61,7 @@ module.exports = {
     // new FaviconsWebpackPlugin('./assets/favicon.png'),
     new HtmlWebpackPlugin({
       api_url: process.env.API_URL || 'http://localhost:8080',
+      baselayer_url: process.env.BASELAYER_URL || 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       template: 'index.html',
       title: 'Coconut',
     })
