@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GeoJSON from 'ol/format/GeoJSON';
 import OLMap from 'ol/Map';
-import OSM from 'ol/source/OSM';
+import XYZ from 'ol/source/XYZ';
 import Select from 'ol/interaction/Select';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -72,7 +72,11 @@ export default class Map extends Component {
   }
 
   basemap () {
-    return new TileLayer({ source: new OSM() });
+    return new TileLayer({
+      source: new XYZ({
+        url: window.BASELAYER_URL, // eslint-disable-line
+      }),
+    });
   }
 
   controls () {

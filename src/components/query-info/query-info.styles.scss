@@ -1,8 +1,8 @@
 $mobile-width: 600px;
 
 .button {
-  position: absolute;
-  bottom: 75px;
+  position: absolute !important;
+  bottom: 20px;
   left: 20px;
   z-index: 10;
 }
@@ -27,4 +27,3 @@ $mobile-width: 600px;
     }
   }
 }
-

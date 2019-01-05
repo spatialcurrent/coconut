@@ -5,6 +5,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import links from './links';
 import styles from './menu.styles.scss';
@@ -17,26 +18,30 @@ export default class Menu extends Component {
   }
 
   get links () {
-    return links.map(({ to, text }) => {
-      if (to.startsWith('http')) {
-        return (
-          <a key={text} href={to}>
-            <ListItem button>
-              <ListItemText primary={text} />
-            </ListItem>
-            <Divider />
-          </a>
-        );
-      }
+    return links.map(this.linkButton);
+  }
+
+  linkButton ({ to, text, icon }) {
+    if (to.startsWith('https://') || to.startsWith('http://') || to.startsWith('mailto:')) {
       return (
-        <Link key={text} to={to}>
+        <a key={text} href={to}>
           <ListItem button>
+            <ListItemIcon>{ icon }</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
           <Divider />
-        </Link>
+        </a>
       );
-    });
+    }
+    return (
+      <Link key={text} to={to}>
+        <ListItem button>
+          <ListItemIcon>{ icon }</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItem>
+        <Divider />
+      </Link>
+    );
   }
 
   render () {
