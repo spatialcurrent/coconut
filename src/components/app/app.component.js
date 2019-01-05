@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Redirect, Route, Switch } from 'react-router-dom';
+import Alert from 'components/alert';
 import Dashboard from 'components/dashboard';
 import Loader from 'components/loader';
 import Menu from 'components/menu';
@@ -34,6 +35,7 @@ export class App extends Component {
     return (
       <div className={styles.app}>
         <Menu />
+        <Alert />
         <Loader />
         <Switch>
           <Route path="/queries" component={Queries} />
