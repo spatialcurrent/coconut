@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Download from 'components/download';
 import Map from 'components/map';
 import NavBar from 'components/nav-bar';
 import Panel from 'components/panel';
@@ -13,6 +14,7 @@ export default class Dashboard extends Component {
         <Panel />
         <Map />
         <QueryInfo />
+        <Download />
       </div>
     );
   }
