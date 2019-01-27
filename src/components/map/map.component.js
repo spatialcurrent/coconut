@@ -160,7 +160,8 @@ export default class Map extends Component {
     if (layer) map.removeLayer(layer);
     const newLayer = this.layer();
     map.addLayer(newLayer);
-    map.getView().fit(newLayer.getSource().getExtent());
+    const extent = newLayer.getSource().getExtent();
+    if (extent.every(Number.isFinite)) map.getView().fit(extent);
     this.setState({ layer: newLayer }, ::this.addSelect);
   }
 

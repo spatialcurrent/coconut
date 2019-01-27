@@ -1,10 +1,12 @@
-export const mockExecuteServiceResult = { id: 1, name: 'test-service' };
-export async function executeService (result) {
+export const mockExecuteServiceResult = [{ name: 'feature 1' }, { name: 'feature 2' }];
+export async function executeService (params) {
+  if (params.withError) throw new Error('mock error');
+  if (params.noFeatures) return [];
   return mockExecuteServiceResult;
 }
 
 export const mockGetProcessResult = { id: 1 };
-export async function getProcess (result) {
+export async function getProcess (params) {
   return mockGetProcessResult;
 }
 
@@ -14,7 +16,7 @@ export async function getProcesses () {
 }
 
 export const mockGetServiceResult = { id: 1, name: 'test-service', process: 'test-process' };
-export async function getService (result) {
+export async function getService (params) {
   return mockGetServiceResult;
 }
 

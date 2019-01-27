@@ -10,8 +10,12 @@ export default function (params) {
     dispatch(openLoader());
     try {
       const features = await executeService(params);
-      dispatch({ features, type: GET_FEATURES });
-      await dispatch(getQuery(params.service));
+      if (features.length) {
+        dispatch({ features, type: GET_FEATURES });
+        await dispatch(getQuery(params.service));
+      } else {
+        dispatch(openAlert('There were no results found for this query. Please try another query.'));
+      }
     } catch (e) {
       dispatch(openAlert('There was a problem executing this query. We have been notified of the problem and will work to fix it.'));
     }
