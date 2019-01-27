@@ -1,10 +1,3 @@
-export const mockExecuteServiceResult = [{ name: 'feature 1' }, { name: 'feature 2' }];
-export async function executeService (params) {
-  if (params.withError) throw new Error('mock error');
-  if (params.noFeatures) return [];
-  return mockExecuteServiceResult;
-}
-
 export const mockGetProcessResult = { id: 1 };
 export async function getProcess (params) {
   return mockGetProcessResult;

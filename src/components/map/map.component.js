@@ -5,8 +5,8 @@ import OLMap from 'ol/Map';
 import XYZ from 'ol/source/XYZ';
 import Select from 'ol/interaction/Select';
 import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
+import VectorTile from 'ol/layer/VectorTile';
+import VectorSource from 'ol/source/VectorTile';
 import View from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
 import { Circle, Fill, Stroke, Style } from 'ol/style';
@@ -23,7 +23,7 @@ export default class Map extends Component {
   static propTypes = {
     clearFeature: PropTypes.func.isRequired,
     feature: PropTypes.object,
-    features: PropTypes.object,
+    service: PropTypes.string,
     setFeature: PropTypes.func.isRequired,
   }
 
@@ -38,10 +38,10 @@ export default class Map extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    const { feature, features } = this.props;
+    const { feature, service } = this.props;
     const { layer, select } = this.state;
 
-    if (features && features !== prevProps.features) {
+    if (service !== prevProps.service) {
       this.updateLayer();
     }
 
@@ -56,15 +56,14 @@ export default class Map extends Component {
 
   addSelect () {
     const { map } = this.state;
-    const { features, setFeature } = this.props;
+    const { setFeature } = this.props;
 
     const select = this.select();
     map.addInteraction(select);
     const selectedFeatures = select.getFeatures();
 
     selectedFeatures.on('add', event => {
-      const id = event.target.item(0).get('id');
-      const feature = features.features.find(f => f.id === id);
+      const feature = event.target.item(0).getProperties();
       if (feature) setFeature(feature);
     });
 
@@ -95,7 +94,9 @@ export default class Map extends Component {
   }
 
   layer () {
-    return new VectorLayer({
+    return new VectorTile({
+      renderBuffer: 256,
+      renderMode: 'image',
       source: this.source(),
       style: this.style(),
     });
@@ -132,13 +133,15 @@ export default class Map extends Component {
   }
 
   source () {
-    const features = new GeoJSON({
+    const format = new GeoJSON({
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857',
-    }).readFeatures(this.props.features);
-
+    });
+    const url = `${window.API_URL}/services/${this.props.service}/tiles/{z}/{x}/{y}.geojson?buffer=1`; // eslint-disable-line
     return new VectorSource({
-      features,
+      format,
+      tileLoadFunction: ::this.tileLoadFunction,
+      url,
     });
   }
 
@@ -155,13 +158,33 @@ export default class Map extends Component {
     });
   }
 
+  tileLoadFunction (tile, url) {
+    tile.setLoader(() => {
+      const xhr = new XMLHttpRequest(); // eslint-disable-line
+      xhr.open('GET', url);
+      xhr.onload = () => {
+        const json = JSON.parse(xhr.responseText);
+        json.features.forEach(feature => {
+          const [z, x, y] = tile.tileCoord;
+          feature.properties._tile_z = z; // eslint-disable-line
+          feature.properties._tile_x = x; // eslint-disable-line
+          feature.properties._tile_y = y; // eslint-disable-line
+        });
+        const format = tile.getFormat();
+        tile.setFeatures(format.readFeatures(json));
+        tile.setProjection(format.defaultFeatureProjection);
+      };
+      xhr.send();
+    });
+  }
+
   updateLayer () {
     const { layer, map } = this.state;
     if (layer) map.removeLayer(layer);
     const newLayer = this.layer();
     map.addLayer(newLayer);
-    const extent = newLayer.getSource().getExtent();
-    if (extent.every(Number.isFinite)) map.getView().fit(extent);
+    // const extent = newLayer.getSource().getExtent();
+    // if (extent.every(Number.isFinite)) map.getView().fit(extent);
     this.setState({ layer: newLayer }, ::this.addSelect);
   }
 

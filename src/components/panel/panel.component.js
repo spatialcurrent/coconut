@@ -29,16 +29,13 @@ export default class Panel extends Component {
 
   get title () {
     const { feature } = this.props;
-    if (feature.properties && feature.properties.name) {
-      return `Name: ${feature.properties.name}`;
-    }
-
+    if (feature.name) return `Name: ${feature.name}`;
     return `Id: ${feature.id}`;
   }
 
   get properties () {
-    const { properties } = this.props.feature;
-    return Object.keys(properties)
+    const { feature } = this.props;
+    return Object.keys(feature)
       .filter(this.isPublicValue)
       .map(key => (
         <TableRow key={key}>
@@ -46,7 +43,7 @@ export default class Panel extends Component {
             { key }
           </TableCell>
           <TableCell>
-            { this.value(key, properties[key]) }
+            { this.value(key, feature[key]) }
           </TableCell>
         </TableRow>
       ));
@@ -96,7 +93,7 @@ export default class Panel extends Component {
   }
 
   isPublicValue (key) {
-    return key[0] !== '_';
+    return key[0] !== '_' && key !== 'geometry';
   }
 
   value (key, value) {

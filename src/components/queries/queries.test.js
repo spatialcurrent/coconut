@@ -9,8 +9,8 @@ let queries;
 describe('Component: Queries', () => {
   beforeEach(() => {
     props = {
+      getQuery: jest.fn(),
       favoriteQuery: jest.fn(),
-      getFeatures: jest.fn(),
       history: { push: jest.fn() },
       loadQueries: jest.fn(),
       queries: [],
