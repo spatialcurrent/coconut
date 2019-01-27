@@ -14,7 +14,7 @@ export default class Download extends Component {
   }
 
   download () {
-    window.open(`${window.API_URL}/services/${this.props.service}/download.json`); //eslint-disable-line
+    window.open(`${window.API_URL}/services/${this.props.service}/download.json`); // eslint-disable-line
   }
 
   render () {

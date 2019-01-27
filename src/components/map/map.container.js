@@ -3,10 +3,10 @@ import clearFeature from 'actions/clear-feature';
 import setFeature from 'actions/set-feature';
 import Map from './map.component';
 
-function mapState ({ feature, features }) {
+function mapState ({ feature, query }) {
   return {
     feature,
-    features,
+    service: query ? query.name : '',
   };
 }
 

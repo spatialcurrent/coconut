@@ -19,7 +19,7 @@ import styles from './queries.styles.scss';
 export default class Queries extends Component {
   static propTypes = {
     favoriteQuery: PropTypes.func.isRequired,
-    getFeatures: PropTypes.func.isRequired,
+    getQuery: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     loadQueries: PropTypes.func.isRequired,
     queries: PropTypes.array.isRequired,
@@ -38,7 +38,6 @@ export default class Queries extends Component {
   }
 
   get cards () {
-    const { getFeatures } = this.props;
     return this.queries.map(({ datastore, description, favorite, name, title }) => (
       <Card key={name} className={styles.query}>
         <CardHeader
@@ -60,7 +59,7 @@ export default class Queries extends Component {
             <Button
               size="small"
               color="primary"
-              onClick={() => getFeatures(name)}
+              onClick={() => this.props.getQuery(name)}
             >
               Show on Map
             </Button>

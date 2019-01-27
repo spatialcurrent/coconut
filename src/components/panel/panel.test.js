@@ -9,7 +9,7 @@ describe('Component: Panel', () => {
     props = {
       feature: {
         id: 1,
-        properties: { name: 'Popeyes' }
+        name: 'Popeyes',
       },
       clearFeature: jest.fn(),
     };
@@ -26,11 +26,11 @@ describe('Component: Panel', () => {
     const component = shallow(<Panel {...props} />);
     const title = component.find('WithStyles(Typography)');
     const text = title.children().first().text();
-    expect(text).toEqual(`Name: ${props.feature.properties.name}`);
+    expect(text).toEqual(`Name: ${props.feature.name}`);
   });
 
   it('users the id for a title if the name doesn\'t exist', () => {
-    const feature = { id: 1, properties: {} };
+    const feature = { id: 1 };
     const component = shallow(<Panel {...props} feature={feature} />);
     const title = component.find('WithStyles(Typography)');
     const text = title.children().first().text();
