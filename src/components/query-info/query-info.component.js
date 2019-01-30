@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import EditIcon from '@material-ui/icons/Edit';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -13,16 +11,10 @@ import styles from './query-info.styles.scss';
 
 export default class QueryInfo extends Component {
   static propTypes = {
-    query: PropTypes.object,
+    closeQueryInfo: PropTypes.func.isRequired,
+    query: PropTypes.object.isRequired,
+    showQueryInfo: PropTypes.bool.isRequired,
   };
-
-  state = {
-    open: false,
-  }
-
-  get disabled () {
-    return !this.props.query;
-  }
 
   get properties () {
     const { query } = this.props;
@@ -79,26 +71,14 @@ export default class QueryInfo extends Component {
 
   render () {
     return (
-      <Fragment>
-        <Button
-          aria-label="Info"
-          className={styles.button}
-          color="secondary"
-          disabled={this.disabled}
-          onClick={() => this.setState({ open: true })}
-          variant="fab"
-        >
-          <EditIcon />
-        </Button>
-        <Dialog open={this.state.open} onClose={() => this.setState({ open: false })}>
-          <DialogTitle>
-            <span className={styles.title}>Query Information</span>
-          </DialogTitle>
-          <DialogContent>
-            { this.table }
-          </DialogContent>
-        </Dialog>
-      </Fragment>
+      <Dialog open={this.props.showQueryInfo} onClose={this.props.closeQueryInfo}>
+        <DialogTitle>
+          <span className={styles.title}>Query Information</span>
+        </DialogTitle>
+        <DialogContent>
+          { this.table }
+        </DialogContent>
+      </Dialog>
     );
   }
 }
