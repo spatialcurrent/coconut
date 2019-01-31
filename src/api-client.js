@@ -29,3 +29,8 @@ export async function getServices () {
   const { data } = await client.get('/services.json');
   return data.items;
 }
+
+export async function getDatastore (datastore) {
+  const { data } = await client.get(`/datastores/${datastore}.json`);
+  return data.item;
+}

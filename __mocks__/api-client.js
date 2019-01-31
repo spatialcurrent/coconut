@@ -20,3 +20,8 @@ export const mockGetServicesResult = [
 export async function getServices () {
   return mockGetServicesResult;
 }
+
+export const mockGetDatastoreResult = { id: 1, name: 'test-datastore' };
+export async function getDatastore () {
+  return mockGetDatastoreResult;
+}

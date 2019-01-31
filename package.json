@@ -7,6 +7,7 @@
     "build": "node ./node_modules/webpack/bin/webpack.js --config ./webpack/webpack.prod.js",
     "lint": "eslint src",
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack/webpack.dev.js --port ${PORT:-8081}",
+    "start:staging": "API_URL=https://railgun.spatialcurrent.io node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack/webpack.dev.js --port ${PORT:-8081}",
     "test": "./node_modules/.bin/jest ./src"
   },
   "sideEffects": false,
