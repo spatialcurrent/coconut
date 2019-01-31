@@ -34,18 +34,44 @@ jobs:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
       - run: npm run build
+      - persist_to_workspace:
+          root: dist
+          paths:
+            - *
       - store_artifacts:
           path: dist
           destination: /
+  deploy_staging:
+    executor: base
+    steps:
+      - checkout
+      - attach_workspace:
+          at: dist
       - run:
           name: Upload to S3
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               sudo apt-get install python-dev python-pip
               pip install awscli --upgrade --user
-              python -m awscli s3 sync dist s3://${AWS_S3_BUCKET}
-              python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths '/*'
+              python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_STAGING}
+              python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID_STAGING} --paths '/*'
             fi
+  deploy_prod:
+    executor: base
+    steps:
+      - checkout
+      - attach_workspace:
+          at: dist
+      - run:
+          name: Upload to S3
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              sudo apt-get install python-dev python-pip
+              pip install awscli --upgrade --user
+              python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_PROD}
+              python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID_PROD} --paths '/*'
+            fi
+
 workflows:
   main:
     jobs:
@@ -57,4 +83,19 @@ workflows:
           requires:
             - pre_deps_javascript
             - test
-
+      - deploy_staging:
+          requires:
+            - build_webpack
+          filters:
+            branches:
+              only: master
+      - approve_prod_deploy:
+          type: approval
+          requires:
+            - deploy_staging
+      - deploy_prod:
+          requires:
+            - approve_prod_deploy
+          filters:
+            branches:
+              only: master
