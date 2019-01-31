@@ -4,6 +4,7 @@ import { withRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Alert from 'components/alert';
 import Dashboard from 'components/dashboard';
 import Loader from 'components/loader';
+import Notes from 'components/notes';
 import Menu from 'components/menu';
 import Queries from 'components/queries';
 import styles from './app.styles.scss';
@@ -37,6 +38,7 @@ export class App extends Component {
         <Menu />
         <Alert />
         <Loader />
+        <Notes />
         <Switch>
           <Route path="/queries" component={Queries} />
           { this.redirect }
