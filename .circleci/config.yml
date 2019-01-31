@@ -34,10 +34,6 @@ jobs:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
       - run: npm run build
-      - persist_to_workspace:
-          root: dist
-          paths:
-            - "."
       - store_artifacts:
           path: dist
           destination: /
@@ -45,8 +41,10 @@ jobs:
     executor: base
     steps:
       - checkout
-      - attach_workspace:
-          at: dist
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ .Branch }}-{{ .Revision }}
+      - run: npm run build
       - run:
           name: Upload to S3
           command: |
@@ -60,8 +58,10 @@ jobs:
     executor: base
     steps:
       - checkout
-      - attach_workspace:
-          at: dist
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ .Branch }}-{{ .Revision }}
+      - run: npm run build
       - run:
           name: Upload to S3
           command: |
