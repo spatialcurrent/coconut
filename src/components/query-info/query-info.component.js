@@ -12,7 +12,7 @@ import styles from './query-info.styles.scss';
 export default class QueryInfo extends Component {
   static propTypes = {
     closeQueryInfo: PropTypes.func.isRequired,
-    query: PropTypes.object.isRequired,
+    query: PropTypes.object,
     showQueryInfo: PropTypes.bool.isRequired,
   };
 
