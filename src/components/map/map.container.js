@@ -5,6 +5,7 @@ import Map from './map.component';
 
 function mapState ({ feature, query }) {
   return {
+    extent: query && JSON.parse(query.extent),
     feature,
     service: query ? query.name : '',
   };

@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GeoJSON from 'ol/format/GeoJSON';
 import OLMap from 'ol/Map';
-import XYZ from 'ol/source/XYZ';
 import Select from 'ol/interaction/Select';
 import TileLayer from 'ol/layer/Tile';
-import VectorTile from 'ol/layer/VectorTile';
+import { transformExtent } from 'ol/proj';
 import VectorSource from 'ol/source/VectorTile';
+import VectorTile from 'ol/layer/VectorTile';
 import View from 'ol/View';
+import XYZ from 'ol/source/XYZ';
 import { defaults as defaultControls } from 'ol/control';
 import { Circle, Fill, Stroke, Style } from 'ol/style';
 import 'ol/ol.css';
@@ -22,6 +23,7 @@ const SELECTED_FEATURE_STROKE_WIDTH = 3;
 export default class Map extends Component {
   static propTypes = {
     clearFeature: PropTypes.func.isRequired,
+    extent: PropTypes.array,
     feature: PropTypes.object,
     service: PropTypes.string,
     setFeature: PropTypes.func.isRequired,
@@ -183,8 +185,8 @@ export default class Map extends Component {
     if (layer) map.removeLayer(layer);
     const newLayer = this.layer();
     map.addLayer(newLayer);
-    // const extent = newLayer.getSource().getExtent();
-    // if (extent.every(Number.isFinite)) map.getView().fit(extent);
+    const extent = transformExtent(this.props.extent, 'EPSG:4326', 'EPSG:3857');
+    if (this.props.extent) map.getView().fit(extent);
     this.setState({ layer: newLayer }, ::this.addSelect);
   }
 

@@ -7,6 +7,7 @@
     "build": "node ./node_modules/webpack/bin/webpack.js --config ./webpack/webpack.prod.js",
     "lint": "eslint src",
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack/webpack.dev.js --port ${PORT:-8081}",
+    "start:staging": "API_URL=https://railgun.spatialcurrent.io node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack/webpack.dev.js --port ${PORT:-8081}",
     "test": "./node_modules/.bin/jest ./src"
   },
   "sideEffects": false,
@@ -62,10 +63,12 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "@material-ui/core": "^3.1.2",
+    "@material-ui/core": "^3.9.1",
     "@material-ui/icons": "^3.0.1",
+    "@material-ui/lab": "^3.0.0-alpha.29",
     "axios": "^0.18.0",
     "es6-promise": "^4.2.5",
+    "lodash.partition": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
     "ol": "^5.2.0",
     "prop-types": "^15.6.2",
