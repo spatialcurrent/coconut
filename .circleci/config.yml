@@ -37,6 +37,23 @@ jobs:
       - store_artifacts:
           path: dist
           destination: /
+  deploy_experimental:
+    executor: base
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ .Branch }}-{{ .Revision }}
+      - run: npm run build
+      - run:
+          name: Upload to S3
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "experimental" ]; then
+              sudo apt-get install python-dev python-pip
+              pip install awscli --upgrade --user
+              python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_EXPERIMENTAL}
+              python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID_EXPERIMENTAL} --paths '/*'
+            fi
   deploy_staging:
     executor: base
     steps:
@@ -83,6 +100,12 @@ workflows:
           requires:
             - pre_deps_javascript
             - test
+      - deploy_experimental:
+          requires:
+            - build_webpack
+          filters:
+            branches:
+              only: experimental
       - deploy_staging:
           requires:
             - build_webpack
