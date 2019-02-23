@@ -2,16 +2,12 @@ import { connect } from 'react-redux';
 import clearFeature from 'actions/clear-feature';
 import Panel from './panel.component';
 
-function mapState ({ feature }) {
-  return {
-    feature,
-  };
-}
+const mapState = ({ feature }) => ({
+  feature,
+});
 
-function mapDispatch (dispatch) {
-  return {
-    clearFeature: () => dispatch(clearFeature()),
-  };
-}
+const mapDispatch = {
+  clearFeature,
+};
 
 export default connect(mapState, mapDispatch)(Panel);
