@@ -72,6 +72,13 @@ export default class Map extends Component {
     return this.state.map.getView().getZoom();
   }
 
+  setTimer () { // not sure why but eslint forces me to put this method up here...
+    clearTimeout(timer);
+    return setTimeout(() => {
+      this.setState({ loadCounter: 0 });
+    }, TIMER_LENGTH);
+  }
+
   addSelect () {
     const { map } = this.state;
     const { setFeature } = this.props;
@@ -159,13 +166,6 @@ export default class Map extends Component {
         }),
       }),
     });
-  }
-
-  setTimer () {
-    clearTimeout(timer);
-    return setTimeout(() => {
-      this.setState({ loadCounter: 0 });
-    }, TIMER_LENGTH);
   }
 
   source () {
