@@ -3,19 +3,15 @@ import clearFeature from 'actions/clear-feature';
 import setFeature from 'actions/set-feature';
 import Map from './map.component';
 
-function mapState ({ feature, query }) {
-  return {
-    extent: query && JSON.parse(query.extent),
-    feature,
-    service: query ? query.name : '',
-  };
-}
+const mapState = ({ feature, query }) => ({
+  extent: query && JSON.parse(query.extent),
+  feature,
+  service: query ? query.name : '',
+});
 
-function mapDispatch (dispatch) {
-  return {
-    clearFeature: () => dispatch(clearFeature()),
-    setFeature: feature => dispatch(setFeature(feature)),
-  };
-}
+const mapDispatch = {
+  clearFeature,
+  setFeature,
+};
 
 export default connect(mapState, mapDispatch)(Map);

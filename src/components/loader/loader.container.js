@@ -2,16 +2,12 @@ import { connect } from 'react-redux';
 import closeLoader from 'actions/close-loader';
 import Loader from './loader.component';
 
-function mapState ({ showLoader }) {
-  return {
-    showLoader,
-  };
-}
+const mapState = ({ showLoader }) => ({
+  showLoader,
+});
 
-function mapDispatch (dispatch) {
-  return {
-    closeLoader: () => dispatch(closeLoader()),
-  };
-}
+const mapDispatch = {
+  closeLoader,
+};
 
 export default connect(mapState, mapDispatch)(Loader);

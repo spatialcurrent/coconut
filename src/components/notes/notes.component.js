@@ -39,6 +39,7 @@ export default class Notes extends Component {
         ]}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         autoHideDuration={HIDE_DURATION}
+        key={note.id}
         message={note.message}
         onClose={() => this.props.removeNote(note.id)}
         open={note.isOpen}
