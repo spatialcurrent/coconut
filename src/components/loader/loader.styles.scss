@@ -1,7 +1,23 @@
 $dialog-width: 400px;
 
-.content {
-  display: flex;
-  justify-content: center;
-  min-width: $dialog-width;
+.loader {
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 85px;
+  z-index: 999;
+
+  > .chip {
+    padding-left: 8px;
+
+    > div:first-child {
+      background-color: transparent;
+    }
+
+    svg {
+      color: white;
+    }
+  }
 }

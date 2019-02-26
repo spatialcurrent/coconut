@@ -14,23 +14,30 @@ import { Circle, Fill, Stroke, Style } from 'ol/style';
 import 'ol/ol.css';
 import styles from './map.styles.scss';
 
-const INITIAL_ZOOM = 2;
+let timer;
+
 const FEATURE_RADIUS = 8;
 const FEATURE_STROKE_WIDTH = 2;
+const INITIAL_ZOOM = 2;
 const SELECTED_FEATURE_RADIUS = 10;
 const SELECTED_FEATURE_STROKE_WIDTH = 3;
+const TIMER_LENGTH = 4000;
+const VISIBLE_ZOOM_LEVEL = 9;
 
 export default class Map extends Component {
   static propTypes = {
     clearFeature: PropTypes.func.isRequired,
+    closeLoader: PropTypes.func.isRequired,
     extent: PropTypes.array,
     feature: PropTypes.object,
+    openLoader: PropTypes.func.isRequired,
     service: PropTypes.string,
     setFeature: PropTypes.func.isRequired,
   }
 
   state = {
     layer: null,
+    loadCounter: 0,
     map: null,
     select: null,
   }
@@ -50,10 +57,26 @@ export default class Map extends Component {
     if (layer && !feature && feature !== prevProps.feature) {
       select.getFeatures().clear();
     }
+
+    if (!this.state.loadCounter) {
+      clearTimeout(timer);
+      this.props.closeLoader();
+    }
   }
 
   componentWillUnmount () {
     this.props.clearFeature();
+  }
+
+  get currentZoomLevel () {
+    return this.state.map.getView().getZoom();
+  }
+
+  setTimer () { // not sure why but eslint forces me to put this method up here...
+    clearTimeout(timer);
+    return setTimeout(() => {
+      this.setState({ loadCounter: 0 });
+    }, TIMER_LENGTH);
   }
 
   addSelect () {
@@ -91,8 +114,19 @@ export default class Map extends Component {
     });
   }
 
+  decrementLoader () {
+    const loadCounter = Math.max(this.state.loadCounter - 1, 0);
+    this.setState({ loadCounter });
+  }
+
   initialize () {
     this.setState({ map: this.map() });
+  }
+
+  incrementLoader () {
+    this.props.openLoader();
+    this.setState({ loadCounter: this.state.loadCounter + 1 });
+    timer = this.setTimer();
   }
 
   layer () {
@@ -162,9 +196,12 @@ export default class Map extends Component {
 
   tileLoadFunction (tile, url) {
     tile.setLoader(() => {
+      const validZoomLevel = this.currentZoomLevel >= VISIBLE_ZOOM_LEVEL;
+      if (validZoomLevel) this.incrementLoader();
       const xhr = new XMLHttpRequest(); // eslint-disable-line
       xhr.open('GET', url);
       xhr.onload = () => {
+        if (validZoomLevel) this.decrementLoader();
         const json = JSON.parse(xhr.responseText);
         json.features.forEach(feature => {
           const [z, x, y] = tile.tileCoord;
