@@ -1,14 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Fab from '@material-ui/core/Fab';
+import Point from 'ol/geom/Point';
+import Icon from '@material-ui/core/Icon';
+import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
+import Geolocation from 'ol/Geolocation';
 import OLMap from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import TileLayer from 'ol/layer/Tile';
-import { transformExtent } from 'ol/proj';
-import VectorSource from 'ol/source/VectorTile';
+import VectorLayer from 'ol/layer/Vector';
+import VectorLayerSource from 'ol/source/Vector';
 import VectorTile from 'ol/layer/VectorTile';
+import VectorTileSource from 'ol/source/VectorTile';
 import View from 'ol/View';
 import XYZ from 'ol/source/XYZ';
+import { transformExtent } from 'ol/proj';
 import { defaults as defaultControls } from 'ol/control';
 import { Circle, Fill, Stroke, Style } from 'ol/style';
 import 'ol/ol.css';
@@ -17,8 +24,10 @@ import styles from './map.styles.scss';
 let timer;
 
 const FEATURE_RADIUS = 8;
+const LOCATION_FEATURE_RADIUS = 12;
 const FEATURE_STROKE_WIDTH = 2;
 const INITIAL_ZOOM = 2;
+const LOCATION_ZOOM = 15;
 const SELECTED_FEATURE_RADIUS = 10;
 const SELECTED_FEATURE_STROKE_WIDTH = 3;
 const TIMER_LENGTH = 4000;
@@ -36,10 +45,14 @@ export default class Map extends Component {
   }
 
   state = {
+    geolocation: null,
     layer: null,
     loadCounter: 0,
+    locationFeature: null,
+    locationLayer: null,
     map: null,
     select: null,
+    zoomToLocation: true,
   }
 
   componentDidMount () {
@@ -70,6 +83,22 @@ export default class Map extends Component {
 
   get currentZoomLevel () {
     return this.state.map.getView().getZoom();
+  }
+
+  get locationButton () {
+    const { geolocation } = this.state;
+    const tracking = geolocation && geolocation.getTracking();
+    return (
+      <Fab
+        color={tracking ? 'primary' : 'default'}
+        aria-label="locate"
+        className={styles.location}
+        onClick={::this.toggleGeolocation}
+        size="small"
+      >
+        <Icon>{tracking ? 'gps_fixed' : 'gps_off'}</Icon>
+      </Fab>
+    );
   }
 
   setTimer () { // not sure why but eslint forces me to put this method up here...
@@ -119,8 +148,30 @@ export default class Map extends Component {
     this.setState({ loadCounter });
   }
 
+  geolocation (map) {
+    const view = map.getView();
+    const projection = view.getProjection();
+    const geolocation = new Geolocation({ projection });
+    geolocation.on('change:position', () => {
+      const { locationFeature, zoomToLocation } = this.state;
+      const coordinates = geolocation.getPosition();
+      if (coordinates && locationFeature) {
+        const point = new Point(coordinates);
+        locationFeature.setGeometry(point);
+        if (zoomToLocation) {
+          view.setCenter(coordinates);
+          view.setZoom(LOCATION_ZOOM);
+          this.setState({ zoomToLocation: false });
+        }
+      }
+    });
+    return geolocation;
+  }
+
   initialize () {
-    this.setState({ map: this.map() });
+    const map = this.map();
+    const geolocation = this.geolocation(map);
+    this.setState({ geolocation, map });
   }
 
   incrementLoader () {
@@ -135,6 +186,28 @@ export default class Map extends Component {
       renderMode: 'image',
       source: this.source(),
       style: this.style(),
+    });
+  }
+
+  locationLayer (feature) {
+    return new VectorLayer({
+      source: new VectorLayerSource({
+        features: [feature],
+      }),
+      style: this.locationStyle(),
+    });
+  }
+
+  locationStyle () {
+    return new Style({
+      image: new Circle({
+        fill: new Fill({ color: styles.locationFeatureFill }),
+        radius: LOCATION_FEATURE_RADIUS,
+        stroke: new Stroke({
+          color: styles.locationFeatureStroke,
+          width: FEATURE_STROKE_WIDTH,
+        }),
+      }),
     });
   }
 
@@ -174,7 +247,7 @@ export default class Map extends Component {
       featureProjection: 'EPSG:3857',
     });
     const url = `${window.API_URL}/services/${this.props.service}/tiles/{z}/{x}/{y}.geojson?buffer=1`; // eslint-disable-line
-    return new VectorSource({
+    return new VectorTileSource({
       format,
       tileLoadFunction: ::this.tileLoadFunction,
       url,
@@ -217,6 +290,29 @@ export default class Map extends Component {
     });
   }
 
+  toggleGeolocation () {
+    if (this.state.geolocation.getTracking()) {
+      this.turnOffGeolocation();
+    } else {
+      this.turnOnGeolocation();
+    }
+  }
+
+  turnOffGeolocation () {
+    const { geolocation, locationLayer, map } = this.state;
+    geolocation.setTracking(false);
+    if (locationLayer) map.removeLayer(locationLayer);
+    this.setState({ locationLayer: null, zoomToLocation: true });
+  }
+
+  turnOnGeolocation () {
+    const { geolocation, map } = this.state;
+    const locationFeature = new Feature();
+    const locationLayer = this.locationLayer(locationFeature);
+    map.addLayer(locationLayer);
+    this.setState({ locationFeature, locationLayer }, () => geolocation.setTracking(true));
+  }
+
   updateLayer () {
     const { layer, map } = this.state;
     if (layer) map.removeLayer(layer);
@@ -235,6 +331,11 @@ export default class Map extends Component {
   }
 
   render () {
-    return <div id="map" className={styles.map} />;
+    return (
+      <Fragment>
+        <div id="map" className={styles.map} />
+        { this.locationButton }
+      </Fragment>
+    );
   }
 }

@@ -5,9 +5,18 @@ $navbar-height: 56px;
   width: 100%;
 }
 
+button.location {
+  position: absolute;
+  right: 16px;
+  top: 78px;
+  z-index: 1000;
+}
+
 :export {
   featureFill: #f73378;
   featureStroke: #ab003c;
-  selectedFeatureFill: #6573c3;
-  selectedFeatureStroke: #2c387e;
+  locationFeatureFill: #2979ff;
+  locationFeatureStroke: white;
+  selectedFeatureFill: #f73378;
+  selectedFeatureStroke: white;
 }
