@@ -7,6 +7,7 @@ let props;
 describe('Component: Map', () => {
   beforeEach(() => {
     props = {
+      addNote: jest.fn(),
       clearFeature: jest.fn(),
       closeLoader: jest.fn(),
       feature: null,
