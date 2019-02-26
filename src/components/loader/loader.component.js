@@ -19,9 +19,9 @@ export default class Loader extends Component {
         <Chip
           avatar={<CircularProgress size={20} />}
           label="Loading tiles"
+          className={styles.chip}
           color="primary"
           onDelete={closeLoader}
-          variant="outlined"
         />
       </div>
     );

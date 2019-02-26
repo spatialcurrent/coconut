@@ -9,11 +9,15 @@ $dialog-width: 400px;
   top: 85px;
   z-index: 999;
 
-  > div {
+  > .chip {
     padding-left: 8px;
 
     > div:first-child {
       background-color: transparent;
+    }
+
+    svg {
+      color: white;
     }
   }
 }
