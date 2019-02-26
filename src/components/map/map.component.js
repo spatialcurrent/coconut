@@ -35,6 +35,7 @@ const VISIBLE_ZOOM_LEVEL = 9;
 
 export default class Map extends Component {
   static propTypes = {
+    addNote: PropTypes.func.isRequired,
     clearFeature: PropTypes.func.isRequired,
     closeLoader: PropTypes.func.isRequired,
     extent: PropTypes.array,
@@ -152,6 +153,7 @@ export default class Map extends Component {
     const view = map.getView();
     const projection = view.getProjection();
     const geolocation = new Geolocation({ projection });
+
     geolocation.on('change:position', () => {
       const { locationFeature, zoomToLocation } = this.state;
       const coordinates = geolocation.getPosition();
@@ -165,6 +167,11 @@ export default class Map extends Component {
         }
       }
     });
+
+    geolocation.on('error', () => {
+      this.props.addNote({ id: 'geolocation', message: 'There was an issue getting your location' });
+    });
+
     return geolocation;
   }
 

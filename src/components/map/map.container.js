@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import addNote from 'actions/add-note';
 import clearFeature from 'actions/clear-feature';
 import closeLoader from 'actions/close-loader';
 import openLoader from 'actions/open-loader';
@@ -12,6 +13,7 @@ const mapState = ({ feature, query }) => ({
 });
 
 const mapDispatch = {
+  addNote,
   clearFeature,
   closeLoader,
   openLoader,
