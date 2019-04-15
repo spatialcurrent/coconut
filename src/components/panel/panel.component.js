@@ -101,7 +101,7 @@ export default class Panel extends Component {
       if (value.startsWith('http://') || value.startsWith('https://')) {
         return <a title={value} href={value} className={styles.value}>{ value }</a>;
       }
-      if ((key === 'website' || key === 'contact:website') && value.startsWith('www.')) {
+      if ((key === 'website' || key === 'contact:website') && (value.startsWith('www.') || value.endsWith('.com') || value.endsWith('.org') || value.endsWith('.net'))) {
         return <a title={value} href={`http://${value}`} className={styles.value}>{ value }</a>;
       }
       if ((key === 'email' || key === 'contact:email') && value.indexOf('@') > 0) {
