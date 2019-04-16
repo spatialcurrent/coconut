@@ -11,6 +11,10 @@ describe('Component: Map', () => {
       clearFeature: jest.fn(),
       closeLoader: jest.fn(),
       feature: null,
+      getQuery: jest.fn(),
+      match: {
+        params: {},
+      },
       openLoader: jest.fn(),
       setFeature: jest.fn(),
     };

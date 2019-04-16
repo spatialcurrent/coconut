@@ -40,6 +40,7 @@ export class App extends Component {
         <Loader />
         <Notes />
         <Switch>
+          <Route path="/queries/:query" component={Dashboard} />
           <Route path="/queries" component={Queries} />
           { this.redirect }
           <Route component={Dashboard} />
