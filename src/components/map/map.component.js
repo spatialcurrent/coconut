@@ -40,6 +40,12 @@ export default class Map extends Component {
     closeLoader: PropTypes.func.isRequired,
     extent: PropTypes.array,
     feature: PropTypes.object,
+    getQuery: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        query: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
     openLoader: PropTypes.func.isRequired,
     queryExtent: PropTypes.array,
     service: PropTypes.string,
@@ -60,6 +66,10 @@ export default class Map extends Component {
 
   componentDidMount () {
     this.initialize();
+
+    const { getQuery, match } = this.props;
+    const { query } = match.params;
+    if (query) getQuery(query);
   }
 
   componentDidUpdate (prevProps) {

@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import addNote from 'actions/add-note';
 import clearFeature from 'actions/clear-feature';
 import closeLoader from 'actions/close-loader';
+import getQuery from 'actions/get-query';
 import openLoader from 'actions/open-loader';
 import setExtent from 'actions/set-extent';
 import setFeature from 'actions/set-feature';
@@ -18,9 +20,10 @@ const mapDispatch = {
   addNote,
   clearFeature,
   closeLoader,
+  getQuery,
   openLoader,
   setExtent,
   setFeature,
 };
 
-export default connect(mapState, mapDispatch)(Map);
+export default withRouter(connect(mapState, mapDispatch)(Map));

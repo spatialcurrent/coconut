@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import getQuery from 'actions/get-query';
 import favoriteQuery from 'actions/favorite-query';
 import loadQueries from 'actions/load-queries';
 import unfavoriteQuery from 'actions/unfavorite-query';
@@ -11,7 +10,6 @@ const mapState = ({ queries }) => ({
 
 const mapDispatch = {
   favoriteQuery,
-  getQuery,
   loadQueries,
   unfavoriteQuery,
 };
