@@ -3,12 +3,14 @@ import addNote from 'actions/add-note';
 import clearFeature from 'actions/clear-feature';
 import closeLoader from 'actions/close-loader';
 import openLoader from 'actions/open-loader';
+import setExtent from 'actions/set-extent';
 import setFeature from 'actions/set-feature';
 import Map from './map.component';
 
-const mapState = ({ feature, query }) => ({
-  extent: query && JSON.parse(query.extent),
+const mapState = ({ extent, feature, query }) => ({
+  extent,
   feature,
+  queryExtent: query && JSON.parse(query.extent),
   service: query ? query.name : '',
 });
 
@@ -17,6 +19,7 @@ const mapDispatch = {
   clearFeature,
   closeLoader,
   openLoader,
+  setExtent,
   setFeature,
 };
 
