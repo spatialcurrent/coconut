@@ -12,5 +12,6 @@ export const OPEN_LOADER = 'OPEN_LOADER';
 export const OPEN_MENU = 'OPEN_MENU';
 export const OPEN_QUERY_INFO = 'OPEN_QUERY_INFO';
 export const REMOVE_NOTE = 'REMOVE_NOTE';
+export const SET_EXTENT = 'SET_EXTENT';
 export const SET_FEATURE = 'SET_FEATURE';
 export const UNFAVORITE_QUERY = 'UNFAVORITE_QUERY';

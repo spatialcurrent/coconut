@@ -8,10 +8,12 @@ describe('Component: Map', () => {
   beforeEach(() => {
     props = {
       addNote: jest.fn(),
+      extent: ['extent'],
       clearFeature: jest.fn(),
       closeLoader: jest.fn(),
       feature: null,
       openLoader: jest.fn(),
+      setExtent: jest.fn(),
       setFeature: jest.fn(),
     };
   });

@@ -41,7 +41,9 @@ export default class Map extends Component {
     extent: PropTypes.array,
     feature: PropTypes.object,
     openLoader: PropTypes.func.isRequired,
+    queryExtent: PropTypes.array,
     service: PropTypes.string,
+    setExtent: PropTypes.func.isRequired,
     setFeature: PropTypes.func.isRequired,
   }
 
@@ -100,13 +102,6 @@ export default class Map extends Component {
         <Icon>{tracking ? 'gps_fixed' : 'gps_off'}</Icon>
       </Fab>
     );
-  }
-
-  setTimer () { // not sure why but eslint forces me to put this method up here...
-    clearTimeout(timer);
-    return setTimeout(() => {
-      this.setState({ loadCounter: 0 });
-    }, TIMER_LENGTH);
   }
 
   addSelect () {
@@ -248,6 +243,24 @@ export default class Map extends Component {
     });
   }
 
+  setExtent () {
+    const { extent, queryExtent, setExtent } = this.props;
+    if (!extent) {
+      const newExtent = transformExtent(queryExtent, 'EPSG:4326', 'EPSG:3857');
+      setExtent(newExtent);
+      this.state.map.getView().fit(newExtent);
+    } else {
+      this.state.map.getView().fit(extent);
+    }
+  }
+
+  setTimer () {
+    clearTimeout(timer);
+    return setTimeout(() => {
+      this.setState({ loadCounter: 0 });
+    }, TIMER_LENGTH);
+  }
+
   source () {
     const format = new GeoJSON({
       dataProjection: 'EPSG:4326',
@@ -278,6 +291,7 @@ export default class Map extends Component {
     tile.setLoader(() => {
       const validZoomLevel = this.currentZoomLevel >= VISIBLE_ZOOM_LEVEL;
       if (validZoomLevel) this.incrementLoader();
+      this.updateExtent();
       const xhr = new XMLHttpRequest(); // eslint-disable-line
       xhr.open('GET', url);
       xhr.onload = () => {
@@ -320,13 +334,17 @@ export default class Map extends Component {
     this.setState({ locationFeature, locationLayer }, () => geolocation.setTracking(true));
   }
 
+  updateExtent () {
+    const extent = this.state.map.getView().calculateExtent();
+    this.props.setExtent(extent);
+  }
+
   updateLayer () {
     const { layer, map } = this.state;
     if (layer) map.removeLayer(layer);
     const newLayer = this.layer();
     map.addLayer(newLayer);
-    const extent = transformExtent(this.props.extent, 'EPSG:4326', 'EPSG:3857');
-    if (this.props.extent) map.getView().fit(extent);
+    this.setExtent();
     this.setState({ layer: newLayer }, ::this.addSelect);
   }
 

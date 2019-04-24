@@ -17,6 +17,18 @@
     "react/no-access-state-in-setstate": "off",
     "react/prefer-stateless-function": "off",
     "react/require-default-props": "off",
+    "react/sort-comp": ["error", {                // Team Preference
+      "order": [
+        "static-methods",
+        "/constructor/",
+        "/state/",
+        "instance-variables",
+        "lifecycle",
+        "getters",
+        "everything-else",
+        "render"
+      ]
+    }],
     "sort-keys": "error",
     "space-before-function-paren": ["error", "always"]
   }
