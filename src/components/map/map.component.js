@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 import Fab from '@material-ui/core/Fab';
 import Point from 'ol/geom/Point';
 import Icon from '@material-ui/core/Icon';
@@ -41,6 +42,8 @@ export default class Map extends Component {
     extent: PropTypes.array,
     feature: PropTypes.object,
     getQuery: PropTypes.func.isRequired,
+    history: PropTypes.object,
+    location: PropTypes.object,
     match: PropTypes.shape({
       params: PropTypes.shape({
         query: PropTypes.string,
@@ -66,10 +69,6 @@ export default class Map extends Component {
 
   componentDidMount () {
     this.initialize();
-
-    const { getQuery, match } = this.props;
-    const { query } = match.params;
-    if (query) getQuery(query);
   }
 
   componentDidUpdate (prevProps) {
@@ -138,6 +137,11 @@ export default class Map extends Component {
     });
   }
 
+  changeMapExtent () {
+    const { extent } = this.props;
+    if (extent) this.state.map.getView().fit(extent);
+  }
+
   controls () {
     return defaultControls({
       attribution: true,
@@ -181,9 +185,18 @@ export default class Map extends Component {
   }
 
   initialize () {
+    const { getQuery, match } = this.props;
+    const { query } = match.params;
+
     const map = this.map();
     const geolocation = this.geolocation(map);
-    this.setState({ geolocation, map });
+
+    this.setState({ geolocation, map }, () => {
+      if (query) getQuery(query);
+      this.setExtentFromUrl(); // set from either url or redux extent
+      setTimeout(::this.changeMapExtent);
+      map.on('moveend', ::this.updateQueryParams);
+    });
   }
 
   incrementLoader () {
@@ -253,14 +266,20 @@ export default class Map extends Component {
     });
   }
 
-  setExtent () {
+  setExtentFromQuery () {
     const { extent, queryExtent, setExtent } = this.props;
-    if (!extent) {
+    if (!extent && queryExtent) {
       const newExtent = transformExtent(queryExtent, 'EPSG:4326', 'EPSG:3857');
       setExtent(newExtent);
-      this.state.map.getView().fit(newExtent);
-    } else {
-      this.state.map.getView().fit(extent);
+    }
+  }
+
+  setExtentFromUrl () {
+    const { location, setExtent } = this.props;
+    if (location.search) {
+      const search = location.search.slice(1);
+      const { extent } = qs.parse(search, { comma: true });
+      if (extent) setExtent(extent.map(Number));
     }
   }
 
@@ -301,7 +320,7 @@ export default class Map extends Component {
     tile.setLoader(() => {
       const validZoomLevel = this.currentZoomLevel >= VISIBLE_ZOOM_LEVEL;
       if (validZoomLevel) this.incrementLoader();
-      this.updateExtent();
+      this.updateQueryParams();
       const xhr = new XMLHttpRequest(); // eslint-disable-line
       xhr.open('GET', url);
       xhr.onload = () => {
@@ -344,9 +363,14 @@ export default class Map extends Component {
     this.setState({ locationFeature, locationLayer }, () => geolocation.setTracking(true));
   }
 
-  updateExtent () {
+  updateQueryParams () {
+    const { history, location, setExtent } = this.props;
     const extent = this.state.map.getView().calculateExtent();
-    this.props.setExtent(extent);
+    setExtent(extent);
+    history.push({
+      pathname: location.pathname,
+      search: qs.stringify({ extent }, { arrayFormat: 'comma', encode: false }),
+    });
   }
 
   updateLayer () {
@@ -354,7 +378,7 @@ export default class Map extends Component {
     if (layer) map.removeLayer(layer);
     const newLayer = this.layer();
     map.addLayer(newLayer);
-    this.setExtent();
+    this.setExtentFromQuery();
     this.setState({ layer: newLayer }, ::this.addSelect);
   }
 
