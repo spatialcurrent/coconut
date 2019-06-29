@@ -10,6 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import { parse, stringify } from 'utils/url';
 import styles from './panel.styles.scss';
 
 const MOBILE_WIDTH = 650;
@@ -18,6 +19,8 @@ export default class Panel extends Component {
   static propTypes = {
     clearFeature: PropTypes.func.isRequired,
     feature: PropTypes.object,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
   }
 
   get anchor () {
@@ -57,7 +60,7 @@ export default class Panel extends Component {
         variant="permanent"
       >
         <div className={styles.top}>
-          <IconButton onClick={this.props.clearFeature}>
+          <IconButton onClick={::this.handleClose}>
             <CloseIcon />
           </IconButton>
         </div>
@@ -94,6 +97,15 @@ export default class Panel extends Component {
 
   isPublicValue (key) {
     return key[0] !== '_' && key !== 'geometry';
+  }
+
+  handleClose () {
+    const { clearFeature, history, location } = this.props;
+    const urlParams = parse(location.search);
+    delete urlParams.featureId;
+    const search = stringify(urlParams);
+    history.push({ pathname: location.pathname, search });
+    clearFeature();
   }
 
   value (key, value) {
