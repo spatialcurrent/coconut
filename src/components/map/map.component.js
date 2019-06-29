@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import qs from 'qs';
 import Fab from '@material-ui/core/Fab';
 import Point from 'ol/geom/Point';
 import Icon from '@material-ui/core/Icon';
@@ -20,16 +19,17 @@ import { transformExtent } from 'ol/proj';
 import { defaults as defaultControls } from 'ol/control';
 import { Circle, Fill, Stroke, Style } from 'ol/style';
 import 'ol/ol.css';
+import { parse, stringify } from 'utils/url';
 import styles from './map.styles.scss';
 
 let timer;
 
-const FEATURE_RADIUS = 8;
-const LOCATION_FEATURE_RADIUS = 12;
+const FEATURE_RADIUS = 6;
+const LOCATION_FEATURE_RADIUS = 10;
 const FEATURE_STROKE_WIDTH = 2;
 const INITIAL_ZOOM = 2;
 const LOCATION_ZOOM = 15;
-const SELECTED_FEATURE_RADIUS = 10;
+const SELECTED_FEATURE_RADIUS = 8;
 const SELECTED_FEATURE_STROKE_WIDTH = 3;
 const TIMER_LENGTH = 4000;
 const VISIBLE_ZOOM_LEVEL = 9;
@@ -113,17 +113,28 @@ export default class Map extends Component {
     );
   }
 
+  get urlParams () {
+    return parse(this.props.location.search);
+  }
+
   addSelect () {
     const { map } = this.state;
-    const { setFeature } = this.props;
+    const { history, location, setFeature } = this.props;
 
     const select = this.select();
     map.addInteraction(select);
     const selectedFeatures = select.getFeatures();
 
     selectedFeatures.on('add', event => {
-      const feature = event.target.item(0).getProperties();
-      if (feature) setFeature(feature);
+      const item = event.target.item(0);
+      const feature = item.getProperties();
+      if (feature) {
+        setFeature(feature);
+        history.push({
+          pathname: location.pathname,
+          search: stringify({ ...this.urlParams, featureId: item.getId() }), // eslint-disable-line
+        });
+      }
     });
 
     this.setState({ select });
@@ -277,8 +288,7 @@ export default class Map extends Component {
   setExtentFromUrl () {
     const { location, setExtent } = this.props;
     if (location.search) {
-      const search = location.search.slice(1);
-      const { extent } = qs.parse(search, { comma: true });
+      const { extent } = this.urlParams;
       if (extent) setExtent(extent.map(Number));
     }
   }
@@ -326,15 +336,28 @@ export default class Map extends Component {
       xhr.onload = () => {
         if (validZoomLevel) this.decrementLoader();
         const json = JSON.parse(xhr.responseText);
-        json.features.forEach(feature => {
+        json.features.forEach(f => {
           const [z, x, y] = tile.tileCoord;
-          feature.properties._tile_z = z; // eslint-disable-line
-          feature.properties._tile_x = x; // eslint-disable-line
-          feature.properties._tile_y = y; // eslint-disable-line
+          f.properties._tile_z = z; // eslint-disable-line
+          f.properties._tile_x = x; // eslint-disable-line
+          f.properties._tile_y = y; // eslint-disable-line
         });
         const format = tile.getFormat();
-        tile.setFeatures(format.readFeatures(json));
+        const features = format.readFeatures(json);
+        tile.setFeatures(features);
         tile.setProjection(format.defaultFeatureProjection);
+
+
+        // if the url includes a feature id and a feature is not in
+        // the redux store, set the feature in the store on tile load
+        const { featureId } = this.urlParams;
+        if (featureId && !this.props.feature) {
+          const feature = features.find(f => f.getId() === Number(featureId));
+          if (feature) {
+            this.props.setFeature(feature.getProperties());
+            this.state.select.getFeatures().push(feature);
+          }
+        }
       };
       xhr.send();
     });
@@ -369,7 +392,7 @@ export default class Map extends Component {
     setExtent(extent);
     history.push({
       pathname: location.pathname,
-      search: qs.stringify({ extent }, { arrayFormat: 'comma', encode: false }),
+      search: stringify({ ...this.urlParams, extent }),
     });
   }
 

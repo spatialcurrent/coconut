@@ -7,11 +7,13 @@ let props;
 describe('Component: Panel', () => {
   beforeEach(() => {
     props = {
+      clearFeature: jest.fn(),
       feature: {
         id: 1,
         name: 'Popeyes',
       },
-      clearFeature: jest.fn(),
+      history: {},
+      location: {},
     };
     global.window.outerWidth = 900;
   });

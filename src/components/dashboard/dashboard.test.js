@@ -7,7 +7,7 @@ describe('Component: Dashboard', () => {
     const component = shallow(<Dashboard />);
     const dashboard = component.find('.dashboard');
     const navBar = component.find('Connect(NavBar)');
-    const panel = component.find('Connect(Panel)');
+    const panel = component.find('withRouter(Connect(Panel))');
     const map = component.find('withRouter(Connect(Map))');
     const queryInfo = component.find('Connect(QueryInfo)');
     expect(dashboard.exists()).toBe(true);
