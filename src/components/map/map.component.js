@@ -16,6 +16,7 @@ import VectorTileSource from 'ol/source/VectorTile';
 import View from 'ol/View';
 import XYZ from 'ol/source/XYZ';
 import { transformExtent } from 'ol/proj';
+import { asArray } from 'ol/color';
 import { defaults as defaultControls } from 'ol/control';
 import { Circle, Fill, Stroke, Style } from 'ol/style';
 import 'ol/ol.css';
@@ -24,12 +25,13 @@ import styles from './map.styles.scss';
 
 let timer;
 
-const FEATURE_RADIUS = 6;
+const FEATURE_RADIUS = 10;
+const FEATURE_OPACITY = 0.8;
 const LOCATION_FEATURE_RADIUS = 10;
 const FEATURE_STROKE_WIDTH = 2;
 const INITIAL_ZOOM = 2;
 const LOCATION_ZOOM = 15;
-const SELECTED_FEATURE_RADIUS = 8;
+const SELECTED_FEATURE_RADIUS = 12;
 const SELECTED_FEATURE_STROKE_WIDTH = 3;
 const TIMER_LENGTH = 4000;
 const VISIBLE_ZOOM_LEVEL = 9;
@@ -313,10 +315,18 @@ export default class Map extends Component {
     });
   }
 
+  fill (c, opacity) {
+    const s = asArray(c).slice();
+    s[3] = opacity;
+    return s;
+  }
+
   style () {
     return new Style({
       image: new Circle({
-        fill: new Fill({ color: styles.featureFill }),
+        fill: new Fill({
+          color: ::this.fill(styles.featureFill, FEATURE_OPACITY),
+        }),
         radius: FEATURE_RADIUS,
         stroke: new Stroke({
           color: styles.featureStroke,
