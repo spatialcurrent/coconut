@@ -122,7 +122,7 @@ export default class Panel extends Component {
       if (key === 'phone' || key === 'phone_1' || key === 'fax' || key === 'contact:phone') {
         return <a title={value} href={`tel:${value}`} className={styles.value}>{ value }</a>;
       }
-      if (key === 'wikidata' || key === 'brand:wikidata') {
+      if (key === 'wikidata' || key === 'brand:wikidata' || key === 'name:etymology:wikidata') {
         return <a title={value} href={`https://www.wikidata.org/wiki/${value}`} className={styles.value}>{ value }</a>;
       }
       if (key === 'wikipedia' || key === 'brand:wikipedia') {
