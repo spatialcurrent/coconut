@@ -1,12 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Fab from '@material-ui/core/Fab';
+import { asArray } from 'ol/color';
+import { defaults as defaultControls } from 'ol/control';
 import Point from 'ol/geom/Point';
 import Icon from '@material-ui/core/Icon';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Geolocation from 'ol/Geolocation';
 import OLMap from 'ol/Map';
+import { defaults as defaultInteractions } from 'ol/interaction';
 import Select from 'ol/interaction/Select';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -16,8 +19,6 @@ import VectorTileSource from 'ol/source/VectorTile';
 import View from 'ol/View';
 import XYZ from 'ol/source/XYZ';
 import { transformExtent } from 'ol/proj';
-import { asArray } from 'ol/color';
-import { defaults as defaultControls } from 'ol/control';
 import { Circle, Fill, Stroke, Style } from 'ol/style';
 import 'ol/ol.css';
 import { parse, stringify } from 'utils/url';
@@ -218,6 +219,21 @@ export default class Map extends Component {
     timer = this.setTimer();
   }
 
+  interactions () {
+    return defaultInteractions({
+      altShiftDragRotate: true,
+      constrainResolution: false,
+      doubleClickZoom: true,
+      dragPan: true,
+      keyboard: true,
+      mouseWheelZoom: true,
+      onFocusOnly: false,
+      pinchRotate: false,
+      pinchZoom: true,
+      shiftDragZoom: true,
+    });
+  }
+
   layer () {
     return new VectorTile({
       renderBuffer: 256,
@@ -252,6 +268,7 @@ export default class Map extends Component {
   map () {
     return new OLMap({
       controls: this.controls(),
+      interactions: this.interactions(),
       layers: [this.basemap()],
       target: 'map',
       view: this.view(),
