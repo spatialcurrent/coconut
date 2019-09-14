@@ -30,25 +30,43 @@ describe('Component: Queries', () => {
     expect(queries.exists()).toBe(true);
   });
 
-  it('calls loadQueries if the queries array has a length of 0', () => {
-    const component = shallow(<Queries {...props} />);
-    expect(props.loadQueries).toHaveBeenCalledTimes(1);
+  describe('queries haven\'t loaded yet', () => {
+    it('calls loadQueries', () => {
+      const component = shallow(<Queries {...props} />);
+      expect(props.loadQueries).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders loading graphic', () => {
+      const component = shallow(<Queries {...props} />);
+      const loader = component.find('.loader');
+      expect(loader.exists()).toBe(true);
+    });
   });
 
-  it('sorts queries alphabetically with favorites at the top', () => {
-    const component = mount(<BrowserRouter><Queries {...props} queries={queries} /></BrowserRouter>);
-    const cards = component.find('CardHeader');
-    expect(cards.first().text()).toContain('Donuts!!!');
-    expect(cards.at(1).text()).toContain('Bars');
-    expect(cards.at(2).text()).toContain('Coffee shops');
-    expect(cards.at(3).text()).toContain('Thai food');
+  describe('queries are loaded', () => {
+    it('doesn\'t render a loading graphic', () => {
+      const component = shallow(<Queries {...props} queries={queries} />);
+      const loader = component.find('.loader');
+      expect(loader.exists()).toBe(false);
+    });
+
+    it('sorts them alphabetically with favorites at the top', () => {
+      const component = mount(<BrowserRouter><Queries {...props} queries={queries} /></BrowserRouter>);
+      const cards = component.find('CardHeader');
+      expect(cards.first().text()).toContain('Donuts!!!');
+      expect(cards.at(1).text()).toContain('Bars');
+      expect(cards.at(2).text()).toContain('Coffee shops');
+      expect(cards.at(3).text()).toContain('Thai food');
+    });
   });
 
-  it('filters out queries that don\'t match the search value', () => {
-    const component = mount(<BrowserRouter><Queries {...props} queries={queries} /></BrowserRouter>);
-    component.find('input').simulate('change', { target: { value: 'cof' } });
-    const cards = component.find('CardHeader');
-    expect(cards).toHaveLength(1);
-    expect(cards.text()).toContain('Coffee shops');
+  describe('search', () => {
+    it('filters out queries that don\'t match the search value', () => {
+      const component = mount(<BrowserRouter><Queries {...props} queries={queries} /></BrowserRouter>);
+      component.find('input').simulate('change', { target: { value: 'cof' } });
+      const cards = component.find('CardHeader');
+      expect(cards).toHaveLength(1);
+      expect(cards.text()).toContain('Coffee shops');
+    });
   });
 });
