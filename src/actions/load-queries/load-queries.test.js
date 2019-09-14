@@ -7,13 +7,28 @@ import loadQueries from './load-queries.action';
 const mockStore = configureMockStore([thunk]);
 
 describe('Action: loadQueries', () => {
-  it('creates a get query action', async () => {
-    const store = mockStore({ queries: [] });
-    const updatedStore = await store.dispatch(loadQueries());
-    const expectedAction = {
-      queries: mockGetServicesResult,
-      type: LOAD_QUERIES,
-    };
-    expect(store.getActions()).toEqual([expectedAction]);
+  let store;
+  beforeEach(() => {
+    store = mockStore({ queries: [] });
+  });
+
+  describe('without cached queries', () => {
+    it('creates a get query action with empty results first (no cache)', async () => {
+      await store.dispatch(loadQueries());
+      const expectedAction = {
+        queries: [],
+        type: LOAD_QUERIES,
+      };
+      expect(store.getActions()[0]).toEqual(expectedAction);
+    });
+
+    it('creates a get query action with queries from the server second', async () => {
+      await store.dispatch(loadQueries());
+      const expectedAction = {
+        queries: mockGetServicesResult,
+        type: LOAD_QUERIES,
+      };
+      expect(store.getActions()[1]).toEqual(expectedAction);
+    });
   });
 });

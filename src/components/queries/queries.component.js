@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -62,6 +63,11 @@ export default class Queries extends Component {
         </CardActions>
       </Card>
     ));
+  }
+
+  get loader () {
+    if (this.props.queries.length) return null;
+    return <CircularProgress className={styles.loader} size={36} />;
   }
 
   get queries () {
@@ -149,6 +155,7 @@ export default class Queries extends Component {
             }}
           />
         </div>
+        { this.loader }
         <div className={styles.queries}>
           { this.cards }
         </div>
