@@ -10,7 +10,7 @@ export default class Dashboard extends Component {
   render () {
     return (
       <div className={styles.dashboard}>
-        <NavBar />
+        <NavBar title="Coconut" />
         <Panel />
         <Map />
         <Controls />

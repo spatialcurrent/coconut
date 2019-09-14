@@ -10,6 +10,7 @@ import styles from './nav-bar.styles.scss';
 export default class NavBar extends Component {
   static propTypes = {
     openMenu: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
   }
 
   render () {
@@ -28,7 +29,7 @@ export default class NavBar extends Component {
             color="inherit"
             variant="title"
           >
-            Coconut
+            { this.props.title }
           </Typography>
         </Toolbar>
       </AppBar>

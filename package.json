@@ -63,9 +63,9 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.1",
-    "@material-ui/icons": "^3.0.1",
-    "@material-ui/lab": "^3.0.0-alpha.29",
+    "@material-ui/core": "^4.4.2",
+    "@material-ui/icons": "^4.4.1",
+    "@material-ui/lab": "^4.0.0-alpha.26",
     "axios": "^0.18.0",
     "es6-promise": "^4.2.5",
     "lodash.partition": "^4.6.0",
@@ -73,8 +73,8 @@
     "ol": "^5.2.0",
     "prop-types": "^15.6.2",
     "qs": "^6.7.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.0",
