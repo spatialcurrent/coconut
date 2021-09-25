@@ -21,6 +21,7 @@ jobs:
     executor: base
     steps:
       - checkout
+      - run: node --version
       - restore_cache:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
@@ -30,6 +31,7 @@ jobs:
     executor: base
     steps:
       - checkout
+      - run: node --version
       - restore_cache:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
@@ -41,6 +43,7 @@ jobs:
     executor: base
     steps:
       - checkout
+      - run: node --version
       - restore_cache:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
@@ -58,6 +61,7 @@ jobs:
     executor: base
     steps:
       - checkout
+      - run: node --version
       - restore_cache:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
@@ -65,7 +69,7 @@ jobs:
       - run:
           name: Upload to S3
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
               sudo apt-get install python-dev python-pip
               pip install awscli --upgrade --user
               python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_STAGING}
@@ -75,6 +79,7 @@ jobs:
     executor: base
     steps:
       - checkout
+      - run: node --version
       - restore_cache:
           keys:
             - v1-node-modules-{{ .Branch }}-{{ .Revision }}
@@ -82,7 +87,7 @@ jobs:
       - run:
           name: Upload to S3
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
               sudo apt-get install python-dev python-pip
               pip install awscli --upgrade --user
               python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_PROD}
@@ -111,7 +116,7 @@ workflows:
             - build_webpack
           filters:
             branches:
-              only: master
+              only: main
       - approve_prod_deploy:
           type: approval
           requires:
@@ -121,4 +126,4 @@ workflows:
             - approve_prod_deploy
           filters:
             branches:
-              only: master
+              only: main
