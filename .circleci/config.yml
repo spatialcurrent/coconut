@@ -52,7 +52,8 @@ jobs:
           name: Upload to S3
           command: |
             if [ "${CIRCLE_BRANCH}" == "experimental" ]; then
-              sudo apt-get install python-dev python-pip
+              sudo apt-get update
+              sudo apt-get install -y python-dev python-pip
               pip install awscli --upgrade --user
               python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_EXPERIMENTAL}
               python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID_EXPERIMENTAL} --paths '/*'
@@ -70,7 +71,8 @@ jobs:
           name: Upload to S3
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              sudo apt-get install python-dev python-pip
+              sudo apt-get update
+              sudo apt-get install -y python-dev python-pip
               pip install awscli --upgrade --user
               python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_STAGING}
               python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID_STAGING} --paths '/*'
@@ -88,7 +90,8 @@ jobs:
           name: Upload to S3
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              sudo apt-get install python-dev python-pip
+              sudo apt-get update
+              sudo apt-get install -y python-dev python-pip
               pip install awscli --upgrade --user
               python -m awscli s3 sync dist s3://${AWS_S3_BUCKET_PROD}
               python -m awscli cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID_PROD} --paths '/*'
